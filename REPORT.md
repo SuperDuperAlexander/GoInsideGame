@@ -120,3 +120,20 @@
 - KI und Sicherheit folgen in M7.
 
 **Neue Entscheidungen**: D29–D31.
+
+## M7 — KI-Spiegelung und Sicherheit
+**Was gemacht wurde**
+- Server-Funktion `api/reflect.ts`: nur POST, max. 4 kB, 30 Anfragen / 10 min pro IP, schreibt nie den Text ins Log (nur Status und Dauer). Ruft OpenRouter mit dem System-Prompt aus CONTENT.md.
+- Browser: prüft jede KI-Antwort streng (Frage, Chips, Teile, Thema, Länge). 6 s Zeitlimit. Jeder Fehler → Ersatz-Tabellen. Der Spieler sieht nie einen Fehler.
+- Einwilligung: beim ersten Mal "eigene Worte" kommt einmal die Frage (Allow / Keep it offline). In den Einstellungen änderbar.
+- Krisen-Prüfung im Browser vor dem Senden (Englisch + Deutsch). Treffer → nichts wird gesendet oder gespeichert, ruhiges Hilfe-Fenster mit Telefonnummern, "Return" → zurück nach außen. Auch `{"crisis": true}` von der KI führt dorthin.
+- Spracheingabe (Mikrofon-Knopf), wenn der Browser sie kann.
+
+**Funktioniert es**
+- Unit-Tests für Prüfung, Sicherheit und Server-Funktion: grün (54 Tests).
+- Browser-Test `M7 ai` mit nachgestellten Antworten: gut, kaputtes JSON, Zeitüberschreitung, Krise (KI), Krise (lokal) → alle enden in einem gültigen Zustand. Keine Anfrage an fremde Adressen.
+
+**Was offen ist**
+- Echter Test mit dem Schlüssel `OPENROUTER_API_KEY` auf Vercel (hier nicht vorhanden – kein Blocker, das Spiel läuft offline).
+
+**Neue Entscheidungen**: D32–D34.
