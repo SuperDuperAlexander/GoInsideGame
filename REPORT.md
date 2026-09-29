@@ -137,3 +137,16 @@
 - Echter Test mit dem Schlüssel `OPENROUTER_API_KEY` auf Vercel (hier nicht vorhanden – kein Blocker, das Spiel läuft offline).
 
 **Neue Entscheidungen**: D32–D34.
+
+## M8 — Echo und Klang
+**Was gemacht wurde**
+- Echo: Bruchstücke (3–6 Wörter) aus den eigenen Worten werden lokal gespeichert (max. 20). Geht man an einer noch nicht verbundenen Störung vorbei (6 m), schwebt ein Bruchstück als Handschrift darüber: "i never… have enough". Höchstens alle 20 s. Vorher nichts.
+- Klang (alles im Code erzeugt): Stadt-Murmeln, Wind, seltenes Holzklicken; eigener Loop pro Störung (räumlich, nach Verbindung −12 dB, langsamer, gedämpft); Herzschlag; Atem-Rauschen; innere Klangflächen; Glocken bei Seele, Herz, jedem Verwandlungs-Schritt, Samen; Tor-Klang.
+
+**Funktioniert es**
+- Browser-Test `M8 echo` auf Desktop und Handy grün (Worte bei Störung 1 → Bruchstück bei Störung 2).
+
+**Was offen ist**
+- Klang nur im Test-Browser geprüft (ohne Lautsprecher). Bitte am Handy anhören.
+
+**Neue Entscheidungen**: keine.
