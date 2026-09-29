@@ -87,3 +87,20 @@
 - Die innere Reise selbst (Seele, Herz, Eins, Samen) kommt in M5.
 
 **Neue Entscheidungen**: D23, D24.
+
+## M5 — Die innere Welt (nur Ersatz-Tabellen)
+**Was gemacht wurde**
+- Papierschnitt-Material: feine Spitze, Blätter, Wellen. Goldenes Licht scheint von hinten durch die Schnitte.
+- Alle 12 Teile: Nebel, Wand, Wasser, Licht, Wind, Pflanzen, Risse, Schlucht, Tür, weiter Raum, enger Raum, Lichtpunkte.
+- Die Reise: Seele ("What did you come to teach me?") → Frage der Störung → Antwort (Chips oder eigene Worte) → der Ort entsteht → zweite Frage → Thema → Herz (Augen zu, 10 s, dann Stelle am Körper antippen, ein warmes Licht bleibt) → Eins (3 Atemzüge, das harte Element verwandelt sich Schritt für Schritt, verschwindet nie) → Samen-Karte (editierbar, "Keep it") → gespeichert.
+- Wand bekommt eine Tür, Schlucht eine Lichtbrücke, Nebel einen Weg, Risse füllen sich mit Gold, Wind wird sanft, Wasser wird still.
+
+**Funktioniert es**
+- `npm run check`, `npm run build`: ja.
+- Browser-Test `M5 inner`: alle 6 Chips der Runde 1 einmal durchgespielt (Desktop), 1 Runde am Handy. Jedes harte Element verwandelt sich in 3 Atemzügen und ist noch da. Samen gespeichert.
+- Draw Calls innen: 25–38 (Ziel < 40).
+
+**Was offen ist**
+- Aussehen der inneren Welt ist ein erster Stand (prozedural). Feinschliff möglich.
+
+**Neue Entscheidungen**: D25–D28.

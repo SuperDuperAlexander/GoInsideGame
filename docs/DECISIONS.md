@@ -29,3 +29,7 @@ Decisions made by Claude Code during the build start at D11.
 - D22. Sound starts on the first pointer or key press, even with `?autostart`. Reason: browsers block audio before a user gesture and would warn in the console.
 - D23. After coming back out without connecting, the choice pair waits until the player has stepped away once. Reason: no nagging; the player leads.
 - D24. `__lw.returnNow()` (debug/test only) jumps to the return step inside. Reason: the M4 dive test must work before and after the inner journey exists.
+- D25. Paper-cut patterns are computed in world units (not uv), so the lace keeps one size on every sheet. The far backdrop is warm solid light, seen through every cut. Reason: "light shining through" instead of black holes.
+- D26. Before the first answer the inner world is almost empty (floor, far light, motes, open space). The place forms from answer 1. Reason: GAME_DESIGN §4 step 7.
+- D27. Fallback seeds use the player's own round-2 words when given (first sentence, ≤ 12 words), else "What I found here: {theme}." Reason: "prefilled from the player's own words or the theme".
+- D28. Crack segments, canyon planks are merged into few meshes. Reason: inner draw calls < 40.

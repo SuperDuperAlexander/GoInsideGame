@@ -1,5 +1,6 @@
 import type { Scene } from '@babylonjs/core/scene';
 import type { Mesh } from '@babylonjs/core/Meshes/mesh';
+import type { ShaderMaterial } from '@babylonjs/core/Materials/shaderMaterial';
 import { PALETTE } from '../config/palette';
 import { GeoBuilder, rgb, rng, type RGB } from '../render/geometry';
 import { createCardboardMaterial } from '../render/materials/cardboard';
@@ -26,7 +27,8 @@ function vary(c: RGB, rand: () => number, amount = 0.08): RGB {
  */
 export class Town {
   readonly meshes: Mesh[] = [];
-  readonly gatePanels: Mesh;
+  readonly cardMat: ShaderMaterial;
+  readonly inkMat: ShaderMaterial;
   private used: Footprint[] = [];
 
   constructor(scene: Scene, private readonly map: WalkMap, tier: Tier) {
@@ -128,15 +130,8 @@ export class Town {
     hull.freezeWorldMatrix();
     this.meshes.push(town, hull);
 
-    // The closed paper gate: two panels, unfolded into light later.
-    const panels = new GeoBuilder();
-    for (const side of [-1, 1]) {
-      const x0 = g.x + side * 0.05;
-      const x1 = g.x + side * 3;
-      const col = rgb(R.wood);
-      panels.box((x0 + x1) / 2, gy - 0.2, g.z, Math.abs(x1 - x0), 3.4, 0.2, 0, col, { jitter: jit });
-    }
-    this.gatePanels = panels.build('gatePanels', scene, cardMat);
+    this.cardMat = cardMat;
+    this.inkMat = inkMat;
   }
 
   /** Distance (coarse) from a point to the walkable area, up to `max`. */

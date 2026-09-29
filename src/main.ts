@@ -5,6 +5,11 @@ import { router } from './core/router';
 import { memory } from './core/save';
 import { Game } from './flow/Game';
 import { Connection } from './flow/Connection';
+import { Journey } from './flow/Journey';
+import { Loop } from './flow/Loop';
+import { PauseFlow } from './flow/PauseFlow';
+import { askConsent, showHelp } from './ui/Panels';
+import { aiMode } from './core/reflectClient';
 import { applyTheme, el, uiRoot } from './ui/dom';
 import { CardPicker } from './ui/CardPicker';
 import { StartScreen } from './ui/StartScreen';
@@ -22,6 +27,16 @@ async function boot(): Promise<void> {
   const canvas = document.getElementById('stage') as HTMLCanvasElement;
   const game = new Game(canvas);
   const connection = new Connection(game);
+  const journey = new Journey(game, connection);
+  const loop = new Loop(game, connection);
+  const pause = new PauseFlow(game);
+  game.aiMode = aiMode;
+  journey.askConsent = async () => {
+    if (flags.noai || memory.data.aiConsent !== null) return;
+    memory.setConsent(await askConsent());
+  };
+  journey.onCrisis = () => connection.toHelp(() => showHelp(() => connection.backFromHelp()));
+  document.documentElement.classList.toggle('lw-reduced', memory.data.settings.reducedMotion);
   window.__lw = {
     state: () => router.state,
     stats: () => game.stats(),
@@ -36,6 +51,12 @@ async function boot(): Promise<void> {
     push: () => game.tryPush(),
     choose: (c: 'within' | 'outside') => game.choose(c),
     returnNow: () => connection.returnNow(),
+    answer: (a: number | string) => journey.answerNow(a),
+    heart: (zone?: string) => journey.heartNow(zone as never),
+    progress: () => journey.progress(),
+    previewHard: (h: string, stage?: number) => journey.previewHard(h as never, stage),
+    hardElement: () => journey.hardElement(),
+    theme: () => connection.theme,
     step: () => connection.step,
     innerMeshes: () => connection.inner.meshCount,
     heap: () => (performance as never as { memory?: { usedJSHeapSize: number } }).memory?.usedJSHeapSize ?? 0,
@@ -59,6 +80,11 @@ async function boot(): Promise<void> {
     restlessness: () => game.restless.value,
     strollerPace: () => game.outer.figures.meanSpeed,
     memory: () => memory.data,
+    endChapter: () => loop.end(),
+    connected: () => loop.connectedCount,
+    fountain: () => game.outer.fountain.fill,
+    pause: () => pause.toggle(),
+    echoes: () => game.echo.shown,
   };
 
   router.go('start');
@@ -80,6 +106,7 @@ async function boot(): Promise<void> {
   const toContinue = async () => {
     await screen.close();
     game.setupDisturbances(memory.data.picks);
+    loop.restore();
     const c = memory.data.checkpoint;
     if (c) game.teleport(c.x, c.z, c.heading);
     router.go('outer');
@@ -88,8 +115,8 @@ async function boot(): Promise<void> {
     canContinue,
     onBegin: () => void toPicker(),
     onContinue: () => void toContinue(),
-    onSettings: () => undefined,
-    onAbout: () => undefined,
+    onSettings: () => pause.openSettings(() => undefined),
+    onAbout: () => pause.openAbout(() => undefined),
   });
   if (flags.autostart) void (canContinue && !flags.autopick ? toContinue() : toPicker());
 }

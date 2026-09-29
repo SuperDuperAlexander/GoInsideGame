@@ -12,6 +12,8 @@ import { PlayerVisual } from '../player/PlayerVisual';
 import { Town } from './Town';
 import { Figures } from './Figures';
 import { ColorZones } from './ColorZones';
+import { Fountain } from './Fountain';
+import { Gate } from './Gate';
 import type { Tier } from '../core/perf';
 
 /** The outer region: scene, ground, sky, town, player, camera. Built from chapters/ch1.json. */
@@ -24,6 +26,8 @@ export class OuterWorld {
   readonly town: Town;
   readonly figures: Figures;
   readonly zones = new ColorZones();
+  readonly fountain: Fountain;
+  readonly gate: Gate;
   glow: GlowLayer | null = null;
 
   constructor(engine: Engine, readonly layout: ChapterLayout, o: { safe: boolean; tier: Tier }) {
@@ -48,6 +52,9 @@ export class OuterWorld {
       this.glow.intensity = 0.9;
       for (const m of this.player.glowMeshes) this.glow.addIncludedOnlyMesh(m);
     }
+    const g = (m: Mesh) => this.addGlow(m);
+    this.fountain = new Fountain(scene, layout.fountain.x, layout.fountain.z, g);
+    this.gate = new Gate(scene, this.map, this.town.cardMat, this.town.inkMat, g);
   }
 
   addGlow(m: Mesh): void {

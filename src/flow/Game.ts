@@ -24,6 +24,7 @@ import { Hint } from '../ui/Hint';
 import { Joystick } from '../ui/Joystick';
 import { PushButton } from '../ui/PushButton';
 import { Opening } from './Opening';
+import { Echo } from '../outer/Echo';
 
 /** A breath driven by a script (tests, ?autobreathe). */
 interface ScriptedBreath {
@@ -43,6 +44,7 @@ export class Game {
   readonly debug: DebugOverlay;
   readonly hint = new Hint();
   disturbances: Disturbance[] = [];
+  readonly echo: Echo;
   private joystick: Joystick;
   private instr: SceneInstrumentation;
   private breathButton: BreathButton;
@@ -74,11 +76,13 @@ export class Game {
     const layout = content().chapter;
     this.outer = new OuterWorld(this.engine, layout, { safe: flags.safe, tier: this.perf.tier });
     this.instr = new SceneInstrumentation(this.outer.scene);
+    this.echo = new Echo(this.outer.scene);
     this.debug = new DebugOverlay(flags.debug);
     this.joystick = new Joystick(this.input);
     this.breathButton = new BreathButton(this.input, t('a11y.breath'));
     this.pushButton = new PushButton(t('a11y.push'));
     this.breath.setPreset(memory.data.settings.rhythm);
+    audio.volume = memory.data.settings.volume;
     if (flags.color) WORLD.saturation = 1;
     const s = layout.start;
     this.teleport(s.x, s.z, s.heading);
@@ -259,6 +263,7 @@ export class Game {
       WORLD.dark.set([dark.collider.x, dark.collider.z, TUNING.disturb.darkenRadius * dark.state.growth, dark.darkness * near]);
     } else WORLD.dark[3] = 0;
     this.updateChoice();
+    this.echo.update(dt, this.disturbances, state === 'outer' || state === 'choosing');
 
     // Player figure.
     o.player.root.position.set(w.x, w.y, w.z);
@@ -338,12 +343,11 @@ export class Game {
     const showBreath = touch && (this.breathAsked || state === 'outer' || state === 'choosing');
     this.breathButton.show(showBreath, this.breathAsked);
     this.breathButton.update(this.breath);
-    if (!touch) {
-      if (this.breathAsked) this.hint.show(t('hint.breathDesktop'), this.innerActive, 'breath-hint');
-      else if (this.hint.visible && this.walkHintTime < 0) this.hint.hide();
-    } else if (this.breathAsked && state === 'opening') {
-      this.hint.show(t('hint.breathTouch'), false, 'breath-hint');
-    } else if (!this.breathAsked && this.walkHintTime < 0 && this.hint.visible) this.hint.hide();
+    const breathHint = touch ? (state === 'opening' ? t('hint.breathTouch') : null) : t('hint.breathDesktop');
+    if (this.breathAsked && breathHint) {
+      if (this.walkHintTime >= 0) this.walkHintTime = -1;
+      this.hint.show(breathHint, this.innerActive, 'breath-hint');
+    } else if (this.hint.visible && this.walkHintTime < 0) this.hint.hide();
     const canPush = this.walking && !!this.nearest(TUNING.disturb.pushRange);
     this.pushButton.show(touch && canPush);
     this.joystick.update();
@@ -354,7 +358,7 @@ export class Game {
     const o = this.outer;
     return {
       fps: Math.round(this.engine.getFps()),
-      drawCalls: this.instr.drawCallsCounter.current,
+      drawCalls: this.innerActive && this.innerDrawCalls ? this.innerDrawCalls() : this.instr.drawCallsCounter.current,
       activeMeshes: (this.innerActive ? this.innerMeshes?.() : o.scene.getActiveMeshes().length) ?? 0,
       restlessness: this.restless.value,
       state: router.state,
@@ -368,6 +372,7 @@ export class Game {
   }
 
   innerMeshes: (() => number) | null = null;
+  innerDrawCalls: (() => number) | null = null;
   aiMode: () => string = () => (flags.noai ? 'off' : 'fallback');
 
   /** Mean greyscale brightness of a screen region (0..1), read right after rendering. */

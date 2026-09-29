@@ -26,7 +26,7 @@ const MOVES: Record<GameState, GameState[]> = {
   diving: ['inner'],
   inner: ['returning', 'help'],
   returning: ['outer'],
-  chapterEnd: ['start'],
+  chapterEnd: ['start', 'outer'],
   paused: [],
   help: ['outer'],
   error: ['boot'],

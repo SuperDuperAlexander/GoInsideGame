@@ -2,7 +2,7 @@ import { CreateCylinder } from '@babylonjs/core/Meshes/Builders/cylinderBuilder'
 import { CreatePlane } from '@babylonjs/core/Meshes/Builders/planeBuilder';
 import { Mesh } from '@babylonjs/core/Meshes/mesh';
 import { setHole } from '../../render/materials/papercut';
-import { addGlow, light, node, paper, sheet, StageTween, stageAmount, type PartContext, type PartHandle } from './kit';
+import { light, node, paper, sheet, StageTween, stageAmount, type PartContext, type PartHandle } from './kit';
 
 /** A tall stack of paper-cut layers, heavy pattern. Hard: light seeps through → a door is cut → it opens. */
 export function buildWall(ctx: PartContext): PartHandle {
@@ -10,7 +10,10 @@ export function buildWall(ctx: PartContext): PartHandle {
   const hard = ctx.hard;
   const high = ctx.place === 'high' ? 1.5 : 1;
   if (hard) root.position.set(0, 0, 6.5);
-  else root.position.set(ctx.rand() < 0.5 ? -5.5 : 5.5, 0, 8), (root.rotation.y = root.position.x < 0 ? 0.9 : -0.9);
+  else {
+    root.position.set(ctx.rand() < 0.5 ? -5.5 : 5.5, 0, 8);
+    root.rotation.y = root.position.x < 0 ? 0.9 : -0.9;
+  }
   const layers: { mat: ReturnType<typeof paper> }[] = [];
   for (let i = 0; i < 4; i++) {
     const mat = paper(ctx, `wall.p${i}`, { pattern: i % 2 ? 'lace' : 'leaves', scale: 3 + i, threshold: 0.62 - i * 0.03 });
@@ -30,14 +33,13 @@ export function buildWall(ctx: PartContext): PartHandle {
   door.parent = hinge;
   door.setEnabled(false);
   const beamMat = light(ctx, 'wall.beamMat', 1);
-  const beam = CreateCylinder('wall.beam', { height: 6, diameterTop: 1.4, diameterBottom: 3.2, tessellation: 12 }, ctx.scene);
+  const beam = CreateCylinder('wall.beam', { height: 3.5, diameterTop: 1.5, diameterBottom: 2.4, tessellation: 12 }, ctx.scene);
   beam.rotation.x = Math.PI / 2;
-  beam.position.set(0, 1.4, -2.5);
+  beam.position.set(0, 1.3, -1.6);
   beam.material = beamMat;
   beam.parent = root;
   beam.visibility = 1;
   beam.setEnabled(false);
-  addGlow(ctx, beam);
   const tween = new StageTween();
   return {
     root,
@@ -52,9 +54,9 @@ export function buildWall(ctx: PartContext): PartHandle {
       const s3 = stageAmount(v, 3);
       // 1: light seeps through the pattern.
       layers.forEach((l, i) => {
-        l.mat.lw.light = 0.4 + s1 * 1.4;
+        l.mat.lw.light = 0.4 + s1 * 0.9;
         l.mat.lw.threshold = 0.62 - i * 0.03 - s1 * 0.12;
-        l.mat.lw.glow = s1 * 0.15 + s3 * 0.25;
+        l.mat.lw.glow = s1 * 0.08 + s3 * 0.1;
         // 2: a door shape is cut through every layer (uv of each layer).
         if (s2 > 0) {
           const w = 7 + i * 0.6;
@@ -67,7 +69,7 @@ export function buildWall(ctx: PartContext): PartHandle {
       // 3: the door opens, light pours through. The wall stays.
       hinge.rotation.y = -s3 * 1.7;
       beam.setEnabled(s3 > 0.01);
-      beamMat.lwSet(s3 * 0.5);
+      beamMat.lwSet(s3 * 0.14);
     },
   };
 }

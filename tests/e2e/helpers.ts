@@ -61,3 +61,46 @@ export async function clearSave(page: Page): Promise<void> {
   await page.goto('/');
   await page.evaluate(() => localStorage.clear());
 }
+
+export async function waitStep(page: Page, step: string, timeout = 90_000): Promise<void> {
+  await page.waitForFunction((s) => (window as never as { __lw: { step(): string } }).__lw.step() === s, step, { timeout });
+}
+
+/** Where to stand in front of each lane's disturbance, and which way to face. */
+export const APPROACH: [number, number, number][] = [
+  [-9.9, 3.2, Math.atan2(-2.1, 2.8)],
+  [0, 5.8, 0],
+  [9.9, 3.2, Math.atan2(2.1, 2.8)],
+];
+
+/** One full Connection Loop with chips (fallback tables), from the outer world back to the outer world. */
+export async function journey(page: Page, lane: number, o: { chip?: number; ownWords?: string; onStep?: (s: string) => Promise<void> } = {}): Promise<void> {
+  const [x, z, h] = APPROACH[lane];
+  await lw(page, 'teleport', x, z, h);
+  await waitState(page, 'choosing');
+  await page.getByTestId('choice-within').click();
+  await lw(page, 'breathe');
+  await waitState(page, 'inner');
+  await waitStep(page, 'soul');
+  await page.getByTestId('soul-ask').click();
+  await waitStep(page, 'answer');
+  if (o.ownWords) {
+    await page.getByTestId('chip-own').click();
+    const consent = page.getByTestId('consent-no');
+    if (await consent.isVisible({ timeout: 1500 }).catch(() => false)) await consent.click();
+    await page.getByTestId('own-words').fill(o.ownWords);
+    await page.getByTestId('say-it').click();
+  } else await page.getByTestId(`chip-${o.chip ?? 0}`).click();
+  await waitStep(page, 'answer2');
+  await o.onStep?.('answer2');
+  await page.getByTestId('chip-0').click();
+  await waitStep(page, 'heart');
+  await lw(page, 'heart', 'chest');
+  await waitStep(page, 'one');
+  for (let i = 0; i < 3; i++) await lw(page, 'breathe');
+  await waitStep(page, 'seed');
+  await page.getByTestId('seed-keep').click();
+  await waitStep(page, 'return');
+  await lw(page, 'breathe');
+  await waitState(page, 'outer', 60_000);
+}

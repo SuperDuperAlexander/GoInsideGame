@@ -57,8 +57,7 @@ varying vec3 vNormal;
 varying vec3 vWorld;
 varying float vDist;
 ${NOISE_GLSL}
-float pattern(vec2 uv) {
-  vec2 p = uv * uScale;
+float pattern(vec2 p) {
   if (uPattern < 0.5) {
     // Lace: rosettes on a grid, joined by thin bridges.
     vec2 g = fract(p) - 0.5;
@@ -78,7 +77,15 @@ float pattern(vec2 uv) {
   return 1.0;
 }
 void main(void) {
-  float v = pattern(vUv);
+  // Pattern in world units, so it keeps its size on every sheet.
+  vec3 nn = normalize(vNormal);
+  vec2 wp2;
+  if (abs(nn.y) > 0.7) wp2 = vWorld.xz;
+  else {
+    vec3 tng = normalize(cross(vec3(0.0, 1.0, 0.0), nn));
+    wp2 = vec2(dot(vWorld, tng), vWorld.y);
+  }
+  float v = pattern(wp2 * uScale * 0.5);
   float th = uThreshold + sin(uTime * 0.7 + vWorld.x * 0.3) * 0.02;
   // A cut shape (door) in uv space: x0, y0, x1, y1 (active when x1 > x0).
   if (uHole.z > uHole.x) {
@@ -101,7 +108,7 @@ void main(void) {
   c += back * edge * (0.45 + 0.9 * uLight);
   c += back * uGlow;
   // Far layers sink into the night.
-  c = mix(c, uNight, smoothstep(12.0, 40.0, vDist) * 0.8);
+  c = mix(c, uNight, smoothstep(12.0, 40.0, vDist) * 0.8 * (1.0 - min(1.0, uGlow * 1.5)));
   c *= 1.0 - uDim;
   gl_FragColor = vec4(c, 1.0);
 }

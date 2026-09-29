@@ -18,6 +18,8 @@ export interface PartContext {
   glow: GlowLayer | null;
   /** True when this part is the hard element of the journey. */
   hard: boolean;
+  /** Reduced motion: particles halved. */
+  reduced?: boolean;
 }
 
 export interface PartHandle {
