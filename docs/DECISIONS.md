@@ -21,3 +21,5 @@ Decisions made by Claude Code during the build start at D11.
 - D14. CSS reads all colours from `palette.ts` through CSS variables set at boot (`ui/dom.ts applyTheme`). A few gradients use translucent versions of palette colours. Reason: keep "all colours in palette.ts" while CSS stays plain.
 - D15. Own words in round 1: the longest matching keyword wins, short keywords (≤ 3 letters) must be whole words. Reason: "I don't want it" must mean *pushAway*, not *want*; "know" must not match "no".
 - D16. Walkable area is a union of simple shapes (field, road, square, lanes, terraces, gate path) in `logic/walkmap.ts`, without Babylon. Buildings stand only where nobody can walk. Reason: pure logic, testable reachability.
+- D17. Frame time is capped at 50 ms per frame (slow machines play in slow motion instead of jumping). Reason: walking and colliders stay stable.
+- D18. Gaps between houses are closed with low cardboard walls (town) and hedges (field) along the edge of the walkable area. Reason: what looks walkable is walkable.

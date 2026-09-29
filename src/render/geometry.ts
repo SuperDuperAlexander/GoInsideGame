@@ -134,8 +134,8 @@ export class GeoBuilder {
       const p1: V3 = [cx + Math.cos(b) * R0, y0, cz + Math.sin(b) * R0];
       const q0: V3 = [cx + Math.cos(a) * R1, y1, cz + Math.sin(a) * R1];
       const q1: V3 = [cx + Math.cos(b) * R1, y1, cz + Math.sin(b) * R1];
-      if (R1 > 0.001) this.poly([p0, q0, q1, p1], color, 1, !flip);
-      else this.poly([p0, q0, p1], color, 1, !flip);
+      if (R1 > 0.001) this.poly([p0, q0, q1, p1], color, 1, flip);
+      else this.poly([p0, q0, p1], color, 1, flip);
     }
     if (o.cap !== false && R1 > 0.001) {
       const top: V3[] = [];

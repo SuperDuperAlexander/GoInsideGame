@@ -21,6 +21,12 @@ async function boot(): Promise<void> {
     state: () => router.state,
     stats: () => game.stats(),
     teleport: (x: number, z: number, h?: number) => game.teleport(x, z, h),
+    addZone: (x: number, z: number, r: number) => game.outer.zones.add(x, z, r),
+    sample: (fx?: number, fy?: number, size?: number) => game.sample(fx, fy, size),
+    look: (yaw: number, pitch?: number) => {
+      game.outer.camera.yaw = yaw;
+      if (pitch !== undefined) game.outer.camera.pitch = pitch;
+    },
   };
   router.go('start');
   const begin = async () => {

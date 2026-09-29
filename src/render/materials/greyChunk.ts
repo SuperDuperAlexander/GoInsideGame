@@ -49,6 +49,6 @@ float lwZone(vec3 w) {
 }
 vec3 lwGrey(vec3 c) {
   float l = dot(c, vec3(0.299, 0.587, 0.114));
-  return vec3(l) * vec3(1.0, 0.985, 0.955);
+  return vec3(l * 0.84 + 0.03) * vec3(1.0, 0.985, 0.955);
 }
 `;

@@ -32,7 +32,7 @@ export class Game {
     this.engine = createEngine(canvas, this.input.touchMode);
     this.perf = new Perf(this.engine, this.input.touchMode);
     const layout = content().chapter;
-    this.outer = new OuterWorld(this.engine, layout, { safe: flags.safe });
+    this.outer = new OuterWorld(this.engine, layout, { safe: flags.safe, tier: this.perf.tier });
     this.instr = new SceneInstrumentation(this.outer.scene);
     this.instr.captureFrameTime = false;
     this.debug = new DebugOverlay(flags.debug);
@@ -57,6 +57,8 @@ export class Game {
     const input = this.walking ? this.input.move() : { x: 0, y: 0 };
     o.walker.update(dt, input, o.camera.yaw);
     this.restless.update(dt, o.walker.intent.x, o.walker.intent.z);
+    o.figures.update(dt, this.restless.value);
+    o.zones.update(dt);
     this.breath.update(dt, {
       inhaleHeld: this.input.inhaleHeld,
       exhaleHeld: this.input.exhaleHeld,
@@ -78,6 +80,8 @@ export class Game {
     updateCardboardUniforms();
     this.joystick.update();
     o.scene.render();
+    // Pixel samples must be read right after rendering (the drawing buffer is not kept).
+    for (const f of this.samples.splice(0)) f();
     this.debug.update(this.stats());
   }
 
@@ -95,6 +99,26 @@ export class Game {
       z: o.walker.z,
       AI: flags.noai ? 'off' : 'fallback',
     };
+  }
+
+  /** Mean greyscale brightness of a centred screen region (0..1). */
+  sample(fx = 0.5, fy = 0.5, size = 0.2): Promise<number> {
+    return new Promise((resolve) => this.samples.push(() => this.readSample(fx, fy, size).then(resolve)));
+  }
+
+  private samples: (() => void)[] = [];
+
+  private async readSample(fx: number, fy: number, size: number): Promise<number> {
+    const e = this.engine;
+    const w = e.getRenderWidth();
+    const h = e.getRenderHeight();
+    const sw = Math.floor(w * size);
+    const sh = Math.floor(h * size);
+    const px = await e.readPixels(Math.floor(w * fx - sw / 2), Math.floor(h * (1 - fy) - sh / 2), sw, sh);
+    const d = px as Uint8Array;
+    let sum = 0;
+    for (let i = 0; i < d.length; i += 4) sum += 0.299 * d[i] + 0.587 * d[i + 1] + 0.114 * d[i + 2];
+    return sum / (d.length / 4) / 255;
   }
 
   teleport(x: number, z: number, h = 0): void {

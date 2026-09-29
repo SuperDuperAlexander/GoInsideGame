@@ -9,6 +9,10 @@ import { buildGround, buildSky } from './Ground';
 import { FollowCamera } from './FollowCamera';
 import { Walker } from './Walker';
 import { PlayerVisual } from '../player/PlayerVisual';
+import { Town } from './Town';
+import { Figures } from './Figures';
+import { ColorZones } from './ColorZones';
+import type { Tier } from '../core/perf';
 
 /** The outer region: scene, ground, sky, town, player, camera. Built from chapters/ch1.json. */
 export class OuterWorld {
@@ -17,9 +21,12 @@ export class OuterWorld {
   readonly camera: FollowCamera;
   readonly walker: Walker;
   readonly player: PlayerVisual;
+  readonly town: Town;
+  readonly figures: Figures;
+  readonly zones = new ColorZones();
   glow: GlowLayer | null = null;
 
-  constructor(engine: Engine, readonly layout: ChapterLayout, o: { safe: boolean }) {
+  constructor(engine: Engine, readonly layout: ChapterLayout, o: { safe: boolean; tier: Tier }) {
     const scene = new Scene(engine);
     this.scene = scene;
     const haze = PALETTE.outer.haze;
@@ -32,6 +39,8 @@ export class OuterWorld {
     buildSky(scene);
     const ground = buildGround(scene, this.map);
     ground.freezeWorldMatrix();
+    this.town = new Town(scene, this.map, o.tier);
+    this.figures = new Figures(scene, this.map, layout.figures);
     this.walker = new Walker(this.map);
     this.player = new PlayerVisual(scene, 'player', { withLight: true });
     if (!o.safe) {

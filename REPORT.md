@@ -33,3 +33,20 @@
 - Stadt kommt in M2.
 
 **Neue Entscheidungen**: keine.
+
+## M2 — Die graue Stadt
+**Was gemacht wurde**
+- Stadt aus grauem Karton, erzeugt aus `ch1.json`: Feld, Platz mit trockenem Brunnen, drei Gassen den Hügel hinauf, Terrassen, Tor-Pfeiler.
+- Häuser mit schiefen Wänden, Dächern, dunklen Fenstern, Türen, dicken Tinten-Umrissen. Bäume aus gekreuzten Karton-Kronen, Steine und Büschel.
+- Graue Spaziergänger auf dem Platz.
+- Grau-zu-Farbe-System: 8 Farbzonen, wachsen in 3 s, 8 % heller. `?color` zeigt alle Farben.
+
+**Funktioniert es**
+- `npm run check`, `npm run build`: ja.
+- Browser-Test `M2`: grün. Draw Calls: 31 (Desktop), 25 (Handy) — Ziel < 100.
+- Test-Zone am Platz: Graustufen-Helligkeit steigt messbar (0,56 → 0,59 Desktop, 0,56 → 0,63 Handy).
+
+**Was offen ist**
+- Störungen, Atem, Auswahl der Karten kommen in M3.
+
+**Neue Entscheidungen**: D17, D18.
