@@ -1,0 +1,234 @@
+{
+  "soul": {
+    "money": "What pulls you to me?",
+    "phone": "What are you looking for in me?",
+    "person": "What happens in you when you see them?",
+    "recognition": "Whose eyes do you want on you?",
+    "closedDoor": "What do you think is behind me?",
+    "crowd": "Where are you, when you stand in me?",
+    "house": "What would living here give you?",
+    "conflict": "What in you answers when I get loud?"
+  },
+  "round1": {
+    "chips": [
+      "want",
+      "afraid",
+      "angry",
+      "excited",
+      "pushAway",
+      "unsure"
+    ],
+    "text": {
+      "want": "I want it",
+      "afraid": "I'm afraid of it",
+      "angry": "It makes me angry",
+      "excited": "It excites me",
+      "pushAway": "I push it away",
+      "unsure": "I don't know"
+    },
+    "scene": {
+      "want": {
+        "place": "tight",
+        "parts": [
+          "narrowSpace",
+          "wall",
+          "light"
+        ],
+        "hardElement": "wall",
+        "lightLevel": 0.3
+      },
+      "afraid": {
+        "place": "dark",
+        "parts": [
+          "canyon",
+          "fog",
+          "particles"
+        ],
+        "hardElement": "canyon",
+        "lightLevel": 0.2
+      },
+      "angry": {
+        "place": "storm",
+        "parts": [
+          "cracks",
+          "wind",
+          "narrowSpace"
+        ],
+        "hardElement": "cracks",
+        "lightLevel": 0.35
+      },
+      "excited": {
+        "place": "restless",
+        "parts": [
+          "openSpace",
+          "wind",
+          "particles"
+        ],
+        "hardElement": "wind",
+        "lightLevel": 0.6
+      },
+      "pushAway": {
+        "place": "high",
+        "parts": [
+          "wall",
+          "narrowSpace",
+          "door"
+        ],
+        "hardElement": "wall",
+        "lightLevel": 0.25
+      },
+      "unsure": {
+        "place": "misty",
+        "parts": [
+          "fog",
+          "openSpace",
+          "water"
+        ],
+        "hardElement": "fog",
+        "lightLevel": 0.4
+      }
+    },
+    "keywords": {
+      "want": [
+        "want",
+        "wish",
+        "need",
+        "have"
+      ],
+      "afraid": [
+        "afraid",
+        "fear",
+        "scared",
+        "lose"
+      ],
+      "angry": [
+        "angry",
+        "hate",
+        "unfair",
+        "annoy"
+      ],
+      "excited": [
+        "excit",
+        "fun",
+        "thrill",
+        "love it"
+      ],
+      "pushAway": [
+        "no",
+        "don't want",
+        "bad",
+        "away"
+      ],
+      "unsure": []
+    }
+  },
+  "round2": {
+    "question": {
+      "want": "What would having it give you?",
+      "afraid": "What are you afraid of losing?",
+      "angry": "What do you wish were different?",
+      "excited": "What does this excitement promise you?",
+      "pushAway": "What would happen if you let it come closer?",
+      "unsure": "Stay here a moment. What is here?"
+    },
+    "themes": {
+      "want": [
+        "Rest",
+        "Safety",
+        "Freedom",
+        "Being seen"
+      ],
+      "afraid": [
+        "Safety",
+        "Love",
+        "Belonging",
+        "Trust"
+      ],
+      "angry": [
+        "Being seen",
+        "Peace",
+        "Freedom",
+        "Trust"
+      ],
+      "excited": [
+        "Joy",
+        "Freedom",
+        "Being seen",
+        "Enough"
+      ],
+      "pushAway": [
+        "Peace",
+        "Trust",
+        "Rest",
+        "Love"
+      ],
+      "unsure": [
+        "Rest",
+        "Peace",
+        "Trust",
+        "Enough"
+      ]
+    },
+    "keywords": {
+      "Rest": [
+        "rest",
+        "tired",
+        "relax"
+      ],
+      "Safety": [
+        "safe",
+        "secure",
+        "money enough"
+      ],
+      "Freedom": [
+        "free",
+        "freedom"
+      ],
+      "Being seen": [
+        "seen",
+        "notice",
+        "respect",
+        "recognised"
+      ],
+      "Belonging": [
+        "belong",
+        "alone",
+        "lonely"
+      ],
+      "Love": [
+        "love",
+        "loved"
+      ],
+      "Peace": [
+        "peace",
+        "calm",
+        "quiet"
+      ],
+      "Joy": [
+        "joy",
+        "happy",
+        "fun"
+      ],
+      "Trust": [
+        "trust"
+      ],
+      "Enough": [
+        "enough"
+      ]
+    }
+  },
+  "themeList": [
+    "Rest",
+    "Safety",
+    "Freedom",
+    "Being seen",
+    "Belonging",
+    "Love",
+    "Peace",
+    "Joy",
+    "Trust",
+    "Enough",
+    "Something else"
+  ],
+  "seedTemplate": "What I found here: {theme}."
+}

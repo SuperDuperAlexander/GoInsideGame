@@ -1,0 +1,94 @@
+{
+  "version": 1,
+  "id": "ch1",
+  "titleKey": "ch1.title",
+  "seed": "grey-town-1",
+  "start": {
+    "x": 0,
+    "z": -40,
+    "heading": 0
+  },
+  "square": {
+    "x": 0,
+    "z": -8,
+    "radius": 11
+  },
+  "fountain": {
+    "x": 0,
+    "z": -8
+  },
+  "lanes": [
+    {
+      "id": "west",
+      "points": [
+        [
+          -6,
+          -2
+        ],
+        [
+          -14,
+          8
+        ],
+        [
+          -16,
+          18
+        ]
+      ],
+      "spot": [
+        -12,
+        6
+      ]
+    },
+    {
+      "id": "centre",
+      "points": [
+        [
+          0,
+          3
+        ],
+        [
+          0,
+          12
+        ],
+        [
+          0,
+          22
+        ]
+      ],
+      "spot": [
+        0,
+        10
+      ]
+    },
+    {
+      "id": "east",
+      "points": [
+        [
+          6,
+          -2
+        ],
+        [
+          14,
+          8
+        ],
+        [
+          16,
+          18
+        ]
+      ],
+      "spot": [
+        12,
+        6
+      ]
+    }
+  ],
+  "gate": {
+    "x": 0,
+    "z": 30
+  },
+  "figures": 6,
+  "bounds": {
+    "radiusX": 30,
+    "radiusZ": 48
+  }
+}

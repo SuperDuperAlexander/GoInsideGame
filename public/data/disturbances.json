@@ -1,0 +1,103 @@
+{
+  "version": 1,
+  "order": [
+    "money",
+    "phone",
+    "person",
+    "recognition",
+    "closedDoor",
+    "crowd",
+    "house",
+    "conflict"
+  ],
+  "types": {
+    "money": {
+      "colorKey": "money",
+      "labelKey": "picker.card.money",
+      "forms": [
+        "slot machine",
+        "lottery booth",
+        "pile of coins"
+      ],
+      "sound": "money",
+      "soundNote": "bright arpeggio, bell rings"
+    },
+    "phone": {
+      "colorKey": "phone",
+      "labelKey": "picker.card.phone",
+      "forms": [
+        "glowing phone",
+        "wall of screens",
+        "cloud of message bubbles"
+      ],
+      "sound": "phone",
+      "soundNote": "soft buzz pattern"
+    },
+    "person": {
+      "colorKey": "person",
+      "labelKey": "picker.card.person",
+      "forms": [
+        "figure at a window",
+        "two figures on a bench",
+        "figure walking away"
+      ],
+      "sound": "person",
+      "soundNote": "low hum with a sigh"
+    },
+    "recognition": {
+      "colorKey": "recognition",
+      "labelKey": "picker.card.recognition",
+      "forms": [
+        "trophy on a pedestal",
+        "spotlight on a small stage",
+        "clapping cut-out crowd"
+      ],
+      "sound": "recognition",
+      "soundNote": "faint applause swell"
+    },
+    "closedDoor": {
+      "colorKey": "closedDoor",
+      "labelKey": "picker.card.closedDoor",
+      "forms": [
+        "locked door",
+        "high gate",
+        "wall with a keyhole"
+      ],
+      "sound": "closedDoor",
+      "soundNote": "slow creak, low drone"
+    },
+    "crowd": {
+      "colorKey": "crowd",
+      "labelKey": "picker.card.crowd",
+      "forms": [
+        "dense crowd",
+        "many masks",
+        "long queue"
+      ],
+      "sound": "crowd",
+      "soundNote": "murmur cluster"
+    },
+    "house": {
+      "colorKey": "house",
+      "labelKey": "picker.card.house",
+      "forms": [
+        "golden house",
+        "palace front",
+        "perfect garden"
+      ],
+      "sound": "house",
+      "soundNote": "warm music-box tune"
+    },
+    "conflict": {
+      "colorKey": "conflict",
+      "labelKey": "picker.card.conflict",
+      "forms": [
+        "storm cloud",
+        "two shouting figures",
+        "thorn hedge"
+      ],
+      "sound": "conflict",
+      "soundNote": "low rumble"
+    }
+  }
+}
