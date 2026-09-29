@@ -50,3 +50,23 @@
 - Störungen, Atem, Auswahl der Karten kommen in M3.
 
 **Neue Entscheidungen**: D17, D18.
+
+## M3 — Atem, Kartenwahl, Störungen, die Welt spiegelt dich
+**Was gemacht wurde**
+- Atem-System mit Knopf (Handy: Licht-Knopf halten, loslassen) und Hinweis am Desktop ("Hold Space · then Shift"). Rhythmus normal / langsam / leicht.
+- Kartenwahl: 8 Karten mit gezeichneten Symbolen in ihrer Farbe, genau 3, Reihenfolge wird gezeigt.
+- Erwachen: Bild unscharf und grau, "Breathe.", der erste volle Atemzug macht es klar, die Figur steht auf, Geh-Hinweis.
+- Alle 8 Störungen × 3 Formen als Formen aus Code, in voller Farbe, pulsierend, mit eigenem Klang-Loop (räumlich). Sie blockieren die Gassen.
+- Schieben (E / Hand-Knopf): wird größer, lauter, die Welt rundherum dunkler. Nie kaputt.
+- Unruhe: schnelles Zick-Zack macht Welt lauter und dunstiger, Störungen pulsieren schneller, graue Figuren eilen.
+- Herzschlag in der Nähe einer Störung. Wahl-Paar *Stay outside* · *Go within* erscheint (Tauchen folgt in M4).
+
+**Funktioniert es**
+- `npm run check`, `npm run build`: ja.
+- Browser-Test `M3 disturbances` auf Desktop und Handy: grün. 3 richtige Typen in 3 Gassen, Terrassen nicht erreichbar, Schieben wächst, Unruhe steigt (0 → 0,42 / 0,64) und fällt (→ 0,11 / 0,03).
+- Draw Calls: 21–37.
+
+**Was offen ist**
+- Tauchen in die innere Welt kommt in M4.
+
+**Neue Entscheidungen**: D19–D22.

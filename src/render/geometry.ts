@@ -147,6 +147,33 @@ export class GeoBuilder {
     }
   }
 
+  /** A low-poly ellipsoid (lat-long, flat-shaded). */
+  blob(cx: number, cy: number, cz: number, rx: number, ry: number, rz: number, color: RGB, seg = 7, inflate = 0, inside = false): void {
+    const rings = Math.max(3, Math.floor(seg * 0.6));
+    const P = (i: number, j: number): V3 => {
+      const th = (j / rings) * Math.PI;
+      const ph = (i / seg) * Math.PI * 2;
+      return [
+        cx + (rx + inflate) * Math.sin(th) * Math.cos(ph),
+        cy + (ry + inflate) * Math.cos(th),
+        cz + (rz + inflate) * Math.sin(th) * Math.sin(ph),
+      ];
+    };
+    for (let j = 0; j < rings; j++)
+      for (let i = 0; i < seg; i++) {
+        const a = P(i, j), b = P(i + 1, j), c = P(i + 1, j + 1), d = P(i, j + 1);
+        if (j === 0) this.poly([a, c, d], color, 1, inside);
+        else if (j === rings - 1) this.poly([a, b, d], color, 1, inside);
+        else this.poly([a, b, c, d], color, 1, inside);
+      }
+  }
+
+  /** A simple cut-out person: cone body + round head. */
+  figure(x: number, y: number, z: number, h: number, color: RGB, head?: RGB): void {
+    this.cylinder(x, y, z, h * 0.22, h * 0.07, h * 0.72, 7, color);
+    this.blob(x, y + h * 0.84, z, h * 0.13, h * 0.15, h * 0.13, head ?? color, 7);
+  }
+
   merge(other: GeoBuilder): void {
     const base = this.vertexCount;
     this.positions.push(...other.positions);

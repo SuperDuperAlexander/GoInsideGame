@@ -75,5 +75,10 @@
   "help.title": "Let's pause here.",
   "help.body": "What you wrote sounds heavy. You don't have to carry it alone. Please talk to someone who can listen right now.",
   "help.lines": "Austria: 142 (Telefonseelsorge) · Germany: 0800 111 0 111 · Switzerland: 143 · Emergency in Europe: 112 · Other countries: findahelpline.com",
-  "help.return": "Return"
+  "help.return": "Return",
+  "a11y.breath": "Breathe",
+  "a11y.push": "Push",
+  "a11y.pause": "Pause",
+  "a11y.mic": "Speak",
+  "a11y.body": "Body outline"
 }

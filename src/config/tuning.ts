@@ -126,6 +126,6 @@ export const TUNING = {
     ambienceMax: 0.6,
     master: 0.8,
   },
-} as const;
+};
 
 export type RhythmPreset = keyof typeof TUNING.breath.presets;

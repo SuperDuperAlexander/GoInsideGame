@@ -23,3 +23,7 @@ Decisions made by Claude Code during the build start at D11.
 - D16. Walkable area is a union of simple shapes (field, road, square, lanes, terraces, gate path) in `logic/walkmap.ts`, without Babylon. Buildings stand only where nobody can walk. Reason: pure logic, testable reachability.
 - D17. Frame time is capped at 50 ms per frame (slow machines play in slow motion instead of jumping). Reason: walking and colliders stay stable.
 - D18. Gaps between houses are closed with low cardboard walls (town) and hedges (field) along the edge of the walkable area. Reason: what looks walkable is walkable.
+- D19. Added accessibility labels (`a11y.*` keys) to `en.json` for icon-only buttons (breath, push, pause, mic, body outline). Reason: screen readers need a name; CONTENT.md has no key for them.
+- D20. The opening blur is a CSS filter on the canvas (blur + greyscale), not a backdrop filter. Reason: backdrop filters over WebGL are not reliable on all browsers.
+- D21. In the choosing state the player can still walk; walking away closes the choice. Reason: *Stay outside* must always be easy, and running from it is allowed.
+- D22. Sound starts on the first pointer or key press, even with `?autostart`. Reason: browsers block audio before a user gesture and would warn in the console.

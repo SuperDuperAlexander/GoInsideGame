@@ -151,7 +151,7 @@ button {
   }
 }
 .lw-line {
-  margin: 0 0 28px;
+  margin: 0 auto 28px;
   text-align: center;
   max-width: 30em;
 }
