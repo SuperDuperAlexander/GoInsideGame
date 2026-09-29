@@ -19,8 +19,9 @@ test('M6 loop', async ({ page }, info) => {
   await journey(page, 0, { chip: 0 });
   let ds = await lw<D[]>(page, 'disturbances');
   expect(ds[0].phase).toBe('connected');
-  expect(ds[0].r).toBeLessThan(1);
   await page.waitForTimeout(3500);
+  ds = await lw<D[]>(page, 'disturbances');
+  expect(ds[0].r).toBeLessThan(1);
   await lw(page, 'teleport', -8, 0, Math.atan2(-2.1, 2.8) + Math.PI * 0);
   await page.waitForTimeout(1500);
   await shot(page, info, 'M6', 'after-1');
@@ -77,6 +78,7 @@ test('M6 pause and settings', async ({ page }, info) => {
   await page.getByTestId('resume').click();
   await waitState(page, 'outer');
   expect((await lw<{ settings: { rhythm: string } }>(page, 'memory')).settings.rhythm).toBe('slow');
+  await expect(page.getByTestId('pause-menu')).toHaveCount(0);
   // Forget everything.
   await page.keyboard.press('Escape');
   await page.getByTestId('open-settings').click();

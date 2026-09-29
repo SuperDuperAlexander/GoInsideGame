@@ -104,3 +104,19 @@
 - Aussehen der inneren Welt ist ein erster Stand (prozedural). Feinschliff möglich.
 
 **Neue Entscheidungen**: D25–D28.
+
+## M6 — Die ganze Schleife und Kapitel-Ende
+**Was gemacht wurde**
+- Nach der Rückkehr: Störung leiser, kleiner, tritt 1,5 m zur Seite, Hindernis schrumpft, Farbzone wächst, Brustlicht wird größer, Brunnen füllt sich mit Licht.
+- Nach 3 Verbindungen: Lichtbrunnen, das Tor faltet sich in warmes Licht auf, die ganze Stadt wird langsam farbig. Durch das Tor gehen → Licht-Übergang → Karte "Chapter complete" mit den 3 Samen.
+- Speichern und Weiterspielen ("Continue your walk"): Position, Zustände, Farben, Brunnen, Tor.
+- Pause (Esc / Pause-Knopf): Weiter, Samenbuch, Einstellungen (Atem-Rhythmus, Lautstärke, weniger Bewegung, KI an/aus, "Forget everything" mit Nachfrage). Start-Bildschirm: Einstellungen und "About the teaching".
+
+**Funktioniert es**
+- `npm run check`, `npm run build`: ja.
+- Browser-Test `M6 loop` (Start bis Kapitel-Ende mit `?noai`, dazwischen Neuladen und Weiterspielen) auf Desktop und Handy grün. `M6 pause and settings` grün.
+
+**Was offen ist**
+- KI und Sicherheit folgen in M7.
+
+**Neue Entscheidungen**: D29–D31.

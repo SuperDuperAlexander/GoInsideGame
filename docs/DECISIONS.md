@@ -33,3 +33,6 @@ Decisions made by Claude Code during the build start at D11.
 - D26. Before the first answer the inner world is almost empty (floor, far light, motes, open space). The place forms from answer 1. Reason: GAME_DESIGN §4 step 7.
 - D27. Fallback seeds use the player's own round-2 words when given (first sentence, ≤ 12 words), else "What I found here: {theme}." Reason: "prefilled from the player's own words or the theme".
 - D28. Crack segments, canyon planks are merged into few meshes. Reason: inner draw calls < 40.
+- D29. After the third connection the whole region slowly turns to colour (global saturation → 1 over 8 s) while the gate unfolds. Reason: GAME_DESIGN §9 "at the end of a chapter the region is in colour".
+- D30. The chapter end card has one button, *Return to the walk* (`pause.resume` text), so the player can walk through the coloured town. Router: `chapterEnd → outer` allowed. Reason: no dead end; no new text needed.
+- D31. Pause is allowed in outer, choosing and inner states (not during dive or return flights). Reason: flights are short and tied to the breath.

@@ -23,7 +23,8 @@ declare global {
 async function boot(): Promise<void> {
   applyTheme();
   if (flags.reducedmotion) memory.data.settings.reducedMotion = true;
-  await loadContent();
+  // ?chapter=<id> loads another region layout; unknown ids fall back to ch1.
+  await loadContent(flags.chapter ?? 'ch1').catch(() => loadContent('ch1'));
   const canvas = document.getElementById('stage') as HTMLCanvasElement;
   const game = new Game(canvas);
   const connection = new Connection(game);
