@@ -1,5 +1,28 @@
 # Bericht an Alexander
 
+## Zusammenfassung (M0–M9 fertig)
+- Das ganze MVP ist gebaut: Start → 3 Karten → Erwachen → graue Stadt → 3 Störungen → innere Reise → Samen → farbige Stadt → Tor → Kapitel-Ende.
+- Alle Tests grün: 54 Unit-Tests, Browser-Tests M0–M9 auf Desktop und Handy-Profil. Keine Fehler in der Konsole, keine Anfragen an fremde Adressen.
+- Kein harter Blocker. Kein `OPENROUTER_API_KEY` hier – das Spiel läuft komplett mit den Ersatz-Tabellen.
+
+### Was du am Handy testen solltest
+1. Auf Vercel importieren (siehe README), Schlüssel `OPENROUTER_API_KEY` eintragen.
+2. Handy: Läuft es flüssig (Ziel 30+ fps)? Mit `?debug` siehst du fps oben links.
+3. Atem-Knopf: halten, loslassen – fühlt es sich ruhig an?
+4. Klang anhören (Kopfhörer): Stadt, Störungen, Herzschlag, Glocken.
+5. Eigene Worte + "Allow": Kommen gute Fragen von der KI?
+6. Einmal neu laden mitten im Kapitel → "Continue your walk".
+
+### Was offen ist
+- Das Aussehen ist ein erster prozeduraler Stand (keine Kunst-Dateien). Besonders die innere Welt kann schöner werden.
+- fps im Test-Browser (Software-Grafik ohne GPU): 6–26. Echte Messung am Handy fehlt noch.
+- Die KI wurde nur mit nachgestellten Antworten getestet.
+
+### Was Kapitel 2 braucht
+- Die gespeicherten Themen (`themes` im Speicher) als Samen-Bäume im Garten.
+- Neues Layout `public/data/chapters/ch2.json`, Tor-Übergang von Kapitel 1.
+- Pflücken / Ast schneiden → wächst nach (Regel "Run from it: it returns").
+
 ## M0 — Einrichtung
 **Was gemacht wurde**
 - Projekt mit Vite, TypeScript (strict), Babylon.js, Vitest, Playwright, ESLint, Prettier.
@@ -148,5 +171,18 @@
 
 **Was offen ist**
 - Klang nur im Test-Browser geprüft (ohne Lautsprecher). Bitte am Handy anhören.
+
+**Neue Entscheidungen**: keine.
+
+## M9 — Handy-Durchgang und Abschluss
+**Was gemacht wurde**
+- Handy: Pixel-Grenze, Qualitätsstufen, halbierte Partikel bei "weniger Bewegung", Safe-Areas (Notch), große Tipp-Flächen (≥ 48 px).
+- Barrierefreiheit: Kontrast-Test (WCAG AA 4.5:1) als Unit-Test, alles per Tastatur bedienbar, sichtbarer Fokus-Ring, Namen für Symbol-Knöpfe.
+- Seite "About the teaching" (vom Start-Bildschirm).
+
+**Funktioniert es**
+- Browser-Test `M9 full` (Start bis Kapitel-Ende) auf Desktop und Handy grün. `M9 keyboard only` grün.
+- Budgets: Download ca. 0,7 MB gzip (Ziel ≤ 3 MB). Draw Calls außen 24–54 (< 100), innen 25–38 (< 40). Aktive Meshes außen ≤ 41 (< 400). Kein Speicher-Zuwachs nach 5 Tauch-Runden.
+- Bilder: `screenshots/final/`.
 
 **Neue Entscheidungen**: keine.
