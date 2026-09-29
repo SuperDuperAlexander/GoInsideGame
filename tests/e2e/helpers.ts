@@ -14,7 +14,7 @@ export function watch(page: Page): Watch {
     if (m.type() === 'error' || m.type() === 'warning') {
       const text = m.text();
       // GPU driver notes from the software renderer are not from our code.
-      if (/GPU stall|swiftshader|WebGL|GL Driver|Automatic fallback/i.test(text)) return;
+      if (/GPU stall due to ReadPixels|Automatic fallback to software WebGL/i.test(text)) return;
       w.errors.push(`${m.type()}: ${text}`);
     }
   });
