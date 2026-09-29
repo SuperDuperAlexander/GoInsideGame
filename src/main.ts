@@ -4,6 +4,7 @@ import { flags } from './core/flags';
 import { router } from './core/router';
 import { memory } from './core/save';
 import { Game } from './flow/Game';
+import { Connection } from './flow/Connection';
 import { applyTheme, el, uiRoot } from './ui/dom';
 import { CardPicker } from './ui/CardPicker';
 import { StartScreen } from './ui/StartScreen';
@@ -20,6 +21,7 @@ async function boot(): Promise<void> {
   await loadContent();
   const canvas = document.getElementById('stage') as HTMLCanvasElement;
   const game = new Game(canvas);
+  const connection = new Connection(game);
   window.__lw = {
     state: () => router.state,
     stats: () => game.stats(),
@@ -33,6 +35,11 @@ async function boot(): Promise<void> {
     breathe: () => game.breathe(),
     push: () => game.tryPush(),
     choose: (c: 'within' | 'outside') => game.choose(c),
+    returnNow: () => connection.returnNow(),
+    step: () => connection.step,
+    innerMeshes: () => connection.inner.meshCount,
+    heap: () => (performance as never as { memory?: { usedJSHeapSize: number } }).memory?.usedJSHeapSize ?? 0,
+    sceneCounts: () => ({ outer: game.outer.scene.meshes.length, inner: connection.inner.scene.meshes.length, materials: game.outer.scene.materials.length + connection.inner.scene.materials.length, textures: connection.inner.scene.textures.length }),
     disturbances: () =>
       game.disturbances.map((d) => ({
         type: d.type,

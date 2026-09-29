@@ -70,3 +70,20 @@
 - Tauchen in die innere Welt kommt in M4.
 
 **Neue Entscheidungen**: D19–D22.
+
+## M4 — Wählen und Eintauchen
+**Was gemacht wurde**
+- Nahe einer Störung: Herzschlag, dann zwei ruhige Worte: *Stay outside* · *Go within*.
+- *Stay outside*: erlaubt. Weggehen und zurückkommen → die Störung zeigt ihre nächste Form (z. B. Spielautomat → Lotto-Bude).
+- *Go within*: ein voller Atemzug. Beim Einatmen fährt die Kamera in die Brust der Figur, dann ein warmes Gold, dann die innere Welt (Nacht-Blau, Ich-Perspektive, Umschauen durch Ziehen). Was man 1,5 s ansieht, kommt langsam näher.
+- Rückweg: "Breathe to return." → Kamera fliegt zurück hinter die Figur.
+- Weniger Bewegung (Einstellung / System): keine Kamerafahrt, nur Überblendung.
+
+**Funktioniert es**
+- `npm run check`, `npm run build`: ja.
+- Browser-Test `M4 dive`: 5 Runden hinein und hinaus, keine Speicher-Zunahme (Meshes, Materialien, Heap gleich). `M4 stay outside`: Form wechselt. Desktop und Handy grün.
+
+**Was offen ist**
+- Die innere Reise selbst (Seele, Herz, Eins, Samen) kommt in M5.
+
+**Neue Entscheidungen**: D23, D24.

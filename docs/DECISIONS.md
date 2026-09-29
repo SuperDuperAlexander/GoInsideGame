@@ -27,3 +27,5 @@ Decisions made by Claude Code during the build start at D11.
 - D20. The opening blur is a CSS filter on the canvas (blur + greyscale), not a backdrop filter. Reason: backdrop filters over WebGL are not reliable on all browsers.
 - D21. In the choosing state the player can still walk; walking away closes the choice. Reason: *Stay outside* must always be easy, and running from it is allowed.
 - D22. Sound starts on the first pointer or key press, even with `?autostart`. Reason: browsers block audio before a user gesture and would warn in the console.
+- D23. After coming back out without connecting, the choice pair waits until the player has stepped away once. Reason: no nagging; the player leads.
+- D24. `__lw.returnNow()` (debug/test only) jumps to the return step inside. Reason: the M4 dive test must work before and after the inner journey exists.

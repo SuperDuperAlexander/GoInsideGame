@@ -50,6 +50,8 @@ export class Game {
   private opening: Opening | null = null;
   private choice: ChoicePair | null = null;
   private choiceFor: Disturbance | null = null;
+  /** After coming back out, the choice waits until the player has stepped away once. */
+  suppressChoice: Disturbance | null = null;
   private walkHintTime = -1;
   private scripted: ScriptedBreath | null = null;
   private samples: (() => void)[] = [];
@@ -61,6 +63,7 @@ export class Game {
   /** Extra per-frame work of other flows. */
   readonly tickers: ((dt: number) => void)[] = [];
   time = 0;
+  readonly safe = flags.safe;
   heartbeat = 0;
   awake = 1;
 
@@ -296,7 +299,8 @@ export class Game {
   private updateChoice(): void {
     const state = router.state;
     const d = this.walking ? this.nearest(TUNING.disturb.choiceRange) : null;
-    const eligible = d && !d.state.snapshot().stayedOutside ? d : null;
+    if (this.suppressChoice && this.suppressChoice.distance > TUNING.disturb.nearRange + 1) this.suppressChoice = null;
+    const eligible = d && d !== this.suppressChoice && !d.state.snapshot().stayedOutside ? d : null;
     if (eligible && !this.choice && state === 'outer') {
       this.choiceFor = eligible;
       eligible.state.startChoosing();
