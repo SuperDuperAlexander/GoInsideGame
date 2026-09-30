@@ -6,6 +6,7 @@ import { router } from '../core/router';
 import { memory } from '../core/save';
 import type { Disturbance } from '../outer/Disturbance';
 import { WORLD } from '../render/materials/greyChunk';
+import { WorldMood, type WorldEvent } from '../logic/worldMood';
 import { el, fadeIn, uiRoot } from '../ui/dom';
 import { seedList } from '../ui/SeedBook';
 import type { Connection } from './Connection';
@@ -18,12 +19,15 @@ import type { Game } from './Game';
 export class Loop {
   private satTarget = -1;
   private ending = false;
+  readonly mood = new WorldMood();
+  private conn: Connection;
 
   constructor(
     private readonly game: Game,
     conn: Connection,
   ) {
-    conn.onConnected = (d) => this.connected(d, false);
+    this.conn = conn;
+    conn.onConnected = (d, theme) => this.connected(d, false, theme, conn.events);
     game.tickers.push((dt) => this.tick(dt));
   }
 
@@ -32,9 +36,24 @@ export class Loop {
   }
 
   /** The world has changed: zone, chest light, fountain; after 3 the gate. */
-  private connected(d: Disturbance, instant: boolean): void {
+  private connected(d: Disturbance, instant: boolean, theme?: string, aiEvents: WorldEvent[] = []): void {
     const o = this.game.outer;
     const n = this.connectedCount;
+    // The town changes as a whole: mood, people, events, colour, music.
+    if (!instant) {
+      const fresh = this.mood.connect(theme ?? d.state.theme ?? 'Something else', aiEvents);
+      o.living.bloom(d.home.x, d.home.z, fresh);
+      memory.data.world = this.mood.snapshot() as never;
+      audio.worldGrow(this.mood.connections, this.mood.events.includes('music'));
+      audio.chime(0.6, 0.12);
+    }
+    o.living.setMood(this.mood.mood, instant);
+    o.living.garden(d.home.x + (d.collider.x - d.home.x), d.home.z + (d.collider.z - d.home.z), instant);
+    o.figures.greetBoost = this.mood.events.includes('peopleGreet') ? 1 : 0;
+    this.satTarget = Math.max(this.satTarget, Math.min(1, 0.08 + n * 0.25));
+    // The colour flows along the whole lane of the connected disturbance.
+    const lane = o.map.layout.lanes[d.index];
+    for (const [px, pz] of lane.points) o.zones.add(px, pz, 5, instant);
     o.zones.seconds = memory.data.settings.reducedMotion ? TUNING.motion.zoneGrow * 1.6 : TUNING.motion.zoneGrow;
     o.zones.add(d.home.x, d.home.z, TUNING.world.zoneRadius, instant);
     const sq = o.map.layout.square;
@@ -47,6 +66,7 @@ export class Loop {
       o.gate.open(instant);
       memory.data.chapter.gateOpen = true;
       this.satTarget = 1;
+      void this.conn;
       if (!instant) {
         audio.swell();
         bus.emit('gate:open', {});
@@ -57,8 +77,14 @@ export class Loop {
 
   /** Continue: rebuild the changed world from the save. */
   restore(): void {
+    this.mood.restore(memory.data.world as never);
+    const o = this.game.outer;
     const done = this.game.disturbances.filter((d) => d.state.isConnected);
     for (const d of done) this.connected(d, true);
+    o.living.bloom(0, 0, this.mood.events, true);
+    o.living.setMood(this.mood.mood, true);
+    audio.worldGrow(this.mood.connections, this.mood.events.includes('music'));
+    WORLD.saturation = Math.max(WORLD.saturation, Math.min(1, 0.08 + done.length * 0.25));
     if (memory.data.chapter.gateOpen) WORLD.saturation = Math.max(WORLD.saturation, 1);
   }
 
@@ -66,7 +92,9 @@ export class Loop {
     const o = this.game.outer;
     o.fountain.update(dt);
     o.gate.update(dt);
-    if (this.satTarget > 0 && WORLD.saturation < this.satTarget) WORLD.saturation = Math.min(1, WORLD.saturation + dt / 8);
+    o.living.update(dt);
+    o.figures.warmth = o.living.shown.warmth;
+    if (this.satTarget > 0 && WORLD.saturation < this.satTarget) WORLD.saturation = Math.min(this.satTarget, WORLD.saturation + dt / 8);
     // Walking through the open gate ends the chapter.
     const g = o.map.layout.gate;
     if (!this.ending && o.gate.opening && router.state === 'outer' && o.walker.z > g.z + 1.2) void this.end();

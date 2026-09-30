@@ -186,6 +186,7 @@ export class Journey {
       return;
     }
     this.conn.theme = res.theme ?? OTHER_THEME;
+    this.conn.events = res.events ?? [];
     this.seed = res.seed ?? '';
     for (const h of this.built?.parts.values() ?? []) h.warm?.();
     audio.chime(1.2, 0.12);

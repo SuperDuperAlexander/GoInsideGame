@@ -86,6 +86,7 @@ async function boot(): Promise<void> {
     fountain: () => game.outer.fountain.fill,
     pause: () => pause.toggle(),
     echoes: () => game.echo.shown,
+    world: () => ({ mood: loop.mood.mood, shown: game.outer.living.shown, events: loop.mood.events, people: game.outer.figures.census(), decorations: game.outer.living.decorationCount }),
   };
 
   router.go('start');

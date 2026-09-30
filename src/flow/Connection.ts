@@ -28,6 +28,8 @@ export class Connection {
   /** True when the journey reached the end (seed kept): the disturbance connects on return. */
   complete = false;
   theme = 'Something else';
+  /** World events chosen by the AI for this connection (empty = offline table by theme). */
+  events: import('../logic/worldMood').WorldEvent[] = [];
 
   constructor(private readonly game: Game) {
     this.inner = new InnerWorld(game.engine, { safe: game.safe });
@@ -47,6 +49,7 @@ export class Connection {
   private begin(d: Disturbance): void {
     this.d = d;
     this.complete = false;
+    this.events = [];
     d.state.goWithin();
     router.go('diving');
     this.step = 'dive';

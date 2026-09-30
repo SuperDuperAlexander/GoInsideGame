@@ -30,6 +30,10 @@ export class Town {
   readonly cardMat: ShaderMaterial;
   readonly inkMat: ShaderMaterial;
   private used: Footprint[] = [];
+  /** Window panes, built separately (see LivingTown). */
+  readonly windows = new GeoBuilder();
+  /** Footprints of the houses, for decorations. */
+  readonly houses: { x: number; z: number; w: number; d: number; h: number; rot: number }[] = [];
 
   constructor(scene: Scene, private readonly map: WalkMap, tier: Tier) {
     const L = map.layout;
@@ -61,6 +65,7 @@ export class Town {
       houses.push({ x, z, w, d, h, rot });
       this.used.push({ x, z, r: rr });
     }
+    this.houses.push(...houses);
     for (const hs of houses) this.house(body, ink, hs.x, hs.z, hs.w, hs.d, hs.h, hs.rot, rand, jit);
 
     // Hedges and low walls close every remaining gap at the edge of the walkable area.
@@ -199,7 +204,12 @@ export class Town {
         if (rand() < 0.25) continue;
         const lx = -w / 2 + (k + 0.5) * (w / cols);
         const [wx, wz] = at(lx, -d / 2 - 0.02);
-        body.box(wx, y + 1.3 + f * 2, wz, 0.55, 0.75, 0.06, rot, dark, {});
+        // Windows live in their own mesh so they can light up (alpha = when this window lights).
+        this.windows.box(wx, y + 1.3 + f * 2, wz, 0.55, 0.75, 0.06, rot, rgb(PALETTE.light.beam), {});
+        const n = this.windows.colors.length;
+        const lightAt = rand();
+        for (let q = n - 24 * 4; q < n; q += 4) this.windows.colors[q + 3] = lightAt;
+        void dark;
       }
     }
   }

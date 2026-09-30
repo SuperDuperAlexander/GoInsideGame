@@ -57,12 +57,14 @@ void main(void) {
 const FRAGMENT = /* glsl */ `
 precision highp float;
 uniform vec3 uLightDir;
+uniform vec4 uHazeCfg;
 uniform vec3 uHaze;
 uniform vec3 uShade;
 uniform vec3 uInk;
 uniform vec3 uTint;
 uniform vec4 uDark;
 uniform vec4 uEmissive;
+uniform vec4 uWave;
 uniform float uTime;
 varying vec4 vColor;
 varying vec3 vNormal;
@@ -75,7 +77,10 @@ void main(void) {
   gl_FragColor = vec4(mix(uInk, uHaze, vFog), 1.0);
 #elif defined(SKY)
   vec3 col = vColor.rgb * uTint;
-  gl_FragColor = vec4(mix(col, lwGrey(col) * 1.02, 1.0 - uSat), 1.0);
+  vec3 skyc = mix(col, lwGrey(col) * 1.02, 1.0 - uSat);
+  // A storm darkens the sky (uHazeCfg.w = storm).
+  skyc = mix(skyc, vec3(0.42, 0.42, 0.46), uHazeCfg.w * 0.55);
+  gl_FragColor = vec4(skyc, 1.0);
 #else
   vec3 col = vColor.rgb * uTint;
   vec3 n = normalize(vNormal);
@@ -112,6 +117,14 @@ void main(void) {
   c = mix(c, col * 1.25, uEmissive.x);
   c += col * uEmissive.y;
 #endif
+#ifdef WINDOWS
+  // Each pane lights up when the town's light passes its own threshold (vertex alpha).
+  float on = smoothstep(vColor.a - 0.04, vColor.a + 0.04, uEmissive.z);
+  c = mix(vec3(0.16, 0.15, 0.14), col * 1.35, on);
+#endif
+  // The bloom wave: a warm ring runs over the town after a connection.
+  float wd = abs(distance(vWorld.xz, uWave.xy) - uWave.z);
+  c = mix(c, vec3(1.0, 0.92, 0.72), smoothstep(2.2, 0.0, wd) * uWave.w * 0.55);
 #ifndef IGNORE_GREY
   // The world darkens around a pushed disturbance.
   float dd = distance(vWorld.xz, uDark.xy);
@@ -134,11 +147,13 @@ export interface CardboardOptions {
   unlit?: boolean;
   sky?: boolean;
   backFaces?: boolean;
+  windows?: boolean;
 }
 
 const all = new Set<ShaderMaterial>();
 const dark = new Vector4();
 const haze = new Vector4();
+const wave = new Vector4();
 
 export function createCardboardMaterial(scene: Scene, name: string, o: CardboardOptions = {}): ShaderMaterial {
   const defines = ['#define VERTEXCOLOR'];
@@ -149,6 +164,7 @@ export function createCardboardMaterial(scene: Scene, name: string, o: Cardboard
   if (o.emissive) defines.push('#define EMISSIVE');
   if (o.unlit) defines.push('#define UNLIT');
   if (o.sky) defines.push('#define SKY');
+  if (o.windows) defines.push('#define WINDOWS');
   const m = new ShaderMaterial(
     name,
     scene,
@@ -168,6 +184,7 @@ export function createCardboardMaterial(scene: Scene, name: string, o: Cardboard
         'uTint',
         'uDark',
         'uEmissive',
+        'uWave',
         'uTime',
         'uSat',
         'uZones',
@@ -190,7 +207,7 @@ export function createCardboardMaterial(scene: Scene, name: string, o: Cardboard
 /** Push the shared WORLD values into every cardboard material. Call once per frame. */
 export function updateCardboardUniforms(): void {
   const t = TUNING.world;
-  haze.set(t.hazeStart * (1 - 0.45 * WORLD.hazeBoost), t.hazeEnd * (1 - 0.35 * WORLD.hazeBoost), 0.92, 0);
+  haze.set(t.hazeStart * (1 - 0.45 * WORLD.hazeBoost), t.hazeEnd * (1 - 0.35 * WORLD.hazeBoost), 0.92, WORLD.storm);
   for (const m of all) {
     m.setFloat('uTime', WORLD.time);
     m.setFloat('uSat', WORLD.saturation);
@@ -203,5 +220,7 @@ export function updateCardboardUniforms(): void {
     dark.set(WORLD.dark[0], WORLD.dark[1], WORLD.dark[2], WORLD.dark[3]);
     m.setVector4('uDark', dark);
     m.setVector4('uHazeCfg', haze);
+    wave.set(WORLD.wave[0], WORLD.wave[1], WORLD.wave[2], WORLD.wave[3]);
+    m.setVector4('uWave', wave);
   }
 }

@@ -238,7 +238,7 @@ export class Game {
     w.update(dt, input, o.camera.yaw);
     this.restless.update(dt, w.intent.x, w.intent.z);
     const r = this.restless.value;
-    o.figures.update(dt, r);
+    o.figures.update(dt, r, w.x, w.z);
     o.zones.update(dt);
     WORLD.hazeBoost += (r - WORLD.hazeBoost) * Math.min(1, dt * 2);
 

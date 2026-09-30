@@ -29,6 +29,8 @@ export interface SaveData {
   aiConsent: boolean | null;
   chapter: { id: string; connected: number; gateOpen: boolean; complete: boolean };
   checkpoint: { x: number; z: number; heading: number } | null;
+  /** The mood of the town and the world events that happened. */
+  world: { mood?: Record<string, number>; events?: string[]; connections?: number } | null;
 }
 
 export interface KeyValueStore {
@@ -49,6 +51,7 @@ export function freshSave(): SaveData {
     aiConsent: null,
     chapter: { id: 'ch1', connected: 0, gateOpen: false, complete: false },
     checkpoint: null,
+    world: null,
   };
 }
 
@@ -135,6 +138,7 @@ export class ThemeMemory {
     this.data.themes = {};
     this.data.chapter = { id: 'ch1', connected: 0, gateOpen: false, complete: false };
     this.data.checkpoint = null;
+    this.data.world = null;
     this.save();
   }
 
@@ -213,5 +217,6 @@ function sanitise(v: unknown): SaveData {
   const c = o.checkpoint;
   if (c && typeof c.x === 'number' && typeof c.z === 'number')
     f.checkpoint = { x: c.x, z: c.z, heading: Number(c.heading) || 0 };
+  if (o.world && typeof o.world === 'object') f.world = o.world;
   return f;
 }

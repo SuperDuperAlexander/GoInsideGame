@@ -3,6 +3,7 @@ import type { ChipKey, FallbackTables } from './contentTypes';
 import { isCrisis } from './safety';
 import { validateSceneSpec, type SceneSpec } from './sceneSpec';
 import { cleanText, hasKeyword } from './text';
+import { isWorldEvent, type WorldEvent } from './worldMood';
 
 export type ReflectStep = 'place' | 'theme';
 
@@ -28,6 +29,8 @@ export interface ReflectResult {
   /** The round 1 fallback key (for the follow-up question). */
   placeKey?: ChipKey;
   crisis?: boolean;
+  /** World events chosen by the AI from the kit (theme step only). */
+  events?: WorldEvent[];
   source: 'ai' | 'fallback';
 }
 
@@ -179,7 +182,8 @@ export function validateResponse(
     if (s && s.length <= 140 && s.split(' ').length <= 16 && !isCrisis(s)) seed = s;
   }
   if (!seed) seed = seedFromTheme(tables, theme);
-  return { question: null, chips: [], theme, sceneSpec: null, seed, source: 'ai' };
+  const events = Array.isArray(o.events) ? [...new Set(o.events.filter(isWorldEvent))].slice(0, 4) : [];
+  return { question: null, chips: [], theme, sceneSpec: null, seed, events, source: 'ai' };
 }
 
 /** Strip ```json fences and parse. */

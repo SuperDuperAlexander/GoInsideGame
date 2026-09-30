@@ -17,6 +17,10 @@ export const WORLD = {
   dark: new Float32Array(4),
   /** 0..1 extra haze from restlessness. */
   hazeBoost: 0,
+  /** 0..1 storm over the town: darker sky. */
+  storm: 0,
+  /** x, z, radius, strength of the bloom wave. */
+  wave: new Float32Array(4),
   lightDir: new Vector3(0.62, 0.72, -0.3).normalize(),
   shade: Color3.FromHexString(PALETTE.outer.card600),
   ink: Color3.FromHexString(PALETTE.outer.ink),

@@ -309,6 +309,7 @@ export class Audio {
         if (inner < 0.5) this.voice(l);
       }
     }
+    this.tickMelody(dt, inner);
     // Heartbeat: two low thumps at 60 bpm.
     if (this.heart) {
       this.heart.gain.setTargetAtTime(heartbeat * 0.7, t, 0.3);
@@ -357,6 +358,51 @@ export class Audio {
       o.stop(t + 5.2);
     }
     [1, 1.25, 1.5, 2].forEach((p, i) => setTimeout(() => this.chime(p, 0.12), 1200 + i * 350));
+  }
+
+  private townGain: GainNode | null = null;
+  private melody = false;
+  private melodyTimer = 2;
+  private melodyStep = 0;
+
+  /**
+   * The town's music grows with every connection: more warm voices in the outer world,
+   * and with the "music" event a soft music-box tune from the windows.
+   */
+  worldGrow(connections: number, music: boolean): void {
+    const ctx = this.ctx;
+    if (!ctx || !this.outerBus) return;
+    if (!this.townGain) {
+      this.townGain = ctx.createGain();
+      this.townGain.gain.value = 0;
+      const lp = ctx.createBiquadFilter();
+      lp.type = 'lowpass';
+      lp.frequency.value = 1400;
+      lp.connect(this.outerBus);
+      this.townGain.connect(lp);
+      // A calm major chord; voices join one by one (by the gain steps).
+      [261.6, 329.6, 392, 523.3, 659.3].forEach((f, i) => {
+        const o = ctx.createOscillator();
+        o.type = i % 2 ? 'triangle' : 'sine';
+        o.frequency.value = f * (1 + (i - 2) * 0.0015);
+        const g = ctx.createGain();
+        g.gain.value = 0.012 * (i < 2 ? 1 : 0.7);
+        o.connect(g).connect(this.townGain!);
+        o.start();
+      });
+    }
+    this.townGain.gain.setTargetAtTime(Math.min(3, connections) / 3, ctx.currentTime, 2);
+    this.melody = music;
+  }
+
+  private tickMelody(dt: number, inner: number): void {
+    if (!this.melody || !this.outerBus || inner > 0.5) return;
+    this.melodyTimer -= dt;
+    if (this.melodyTimer > 0) return;
+    const notes = [523.3, 659.3, 784, 659.3, 587.3, 523.3, 440, 523.3];
+    this.tone(this.outerBus, notes[this.melodyStep % notes.length], 0.9, 0.05, 'sine');
+    this.melodyStep++;
+    this.melodyTimer = this.melodyStep % 8 === 0 ? 4 : 0.45;
   }
 
   /** A push: short dull thud. */

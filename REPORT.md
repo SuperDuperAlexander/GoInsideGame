@@ -210,3 +210,20 @@
 - `npm run check` (55 Tests, neu: jede Antwort gehört zu genau einer Art) und Browser-Tests M5, M7: grün.
 
 **Neue Entscheidungen**: D37.
+
+## Nachtrag 30.09. — Die lebendige Welt (Option A, Babylon.js)
+**Was gemacht wurde**
+- Die Stadt hat eine Stimmung: Wärme, Licht, Pflege, Sturm. Jede Verbindung verändert die ganze Stadt, nicht nur die Störung.
+- Am Anfang: Sturm über der Stadt mit Blitzen, dunkle Fenster, mürrische Menschen (kleiner Blitz über dem Kopf, rempeln, hetzen).
+- Nach jeder Verbindung: eine warme Welle läuft von der Gasse über die Stadt. Wo sie vorbeikommt, wachsen neue Dinge aus dem Boden.
+- Das gefundene Thema bestimmt WAS kommt (jeder Durchgang ist anders): z. B. Rest → Bänke, Laternen, Licht in den Fenstern; Freedom → Drachen, Vögel, Girlanden; Belonging → gemeinsamer Tisch, Menschen grüßen sich; Peace → Sturm zieht ab, Blumen, Vögel.
+- Menschen verändern sich einzeln: mürrisch → neutral → freundlich (bleiben stehen, grüßen einander) → warm (kleine Herzen, drehen sich zum Spieler). Wenn es warm ist, kommen mehr Menschen heraus.
+- Die ganze Stadt bekommt mit jeder Verbindung mehr Farbe. Die Musik der Stadt wächst.
+- Um die verbundene Störung wächst ein kleiner Garten.
+- Die KI (mit Schlüssel) darf 2–3 Welt-Ereignisse aus dem festen Baukasten wählen, passend zu den Worten des Spielers.
+
+**Funktioniert es**
+- Neue Unit-Tests `worldMood` und neuer Browser-Test `M10 living world` (Desktop + Handy) grün: Sturm geht, Menschen werden warm, 7 Ereignisse, Neuladen bringt alles zurück. Draw Calls 81–92 (< 100).
+- Bilder: `screenshots/M10/`.
+
+**Neue Entscheidungen**: D38.

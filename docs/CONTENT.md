@@ -249,7 +249,9 @@ Joy, Trust, Enough.
 
 If step is "theme": return
 {"question": null, "chips": [], "theme": one word from the list above or "Something else",
- "sceneSpec": null, "seed": "one short sentence, max 12 words, in the player's own words, first person"}
+ "sceneSpec": null, "seed": "one short sentence, max 12 words, in the player's own words, first person",
+ "events": 2-3 of flowers|lanterns|garlands|benches|kites|birds|sharedTable|windowsLit|stormClears|peopleGreet|music}
+The events are how the outer town heals after this meeting; choose them to fit the player's words and theme.
 The seed never promises anything and never gives advice. Example: "Behind the pull, I want rest."
 
 Return JSON only. No other text.
