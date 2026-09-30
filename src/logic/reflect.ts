@@ -46,8 +46,10 @@ export function buildRequest(ctx: ReflectContext): Record<string, unknown> {
 }
 
 /** Round 1: find the chip key for text (chip text or own words). Longest keyword wins. */
-export function matchPlaceKey(tables: FallbackTables, text: string): ChipKey {
+export function matchPlaceKey(tables: FallbackTables, text: string, type?: string): ChipKey {
   const t = text.toLowerCase().replace(/[’‘]/g, "'");
+  const own = type ? tables.round1.byType?.[type] : undefined;
+  if (own) for (const key of tables.round1.chips) if (own[key]?.toLowerCase() === t.trim()) return key;
   for (const key of tables.round1.chips) if (tables.round1.text[key].toLowerCase() === t.trim()) return key;
   let best: ChipKey = 'unsure';
   let bestLen = 0;
@@ -100,13 +102,24 @@ export function seedFromWords(text: string): string | null {
   return /[.!?]$/.test(s) ? s : `${s}.`;
 }
 
+/** The chips that answer a type's soul question (falls back to the general chips). */
+export function soulChips(tables: FallbackTables, type: string): string[] {
+  const own = tables.round1.byType?.[type];
+  return tables.round1.chips.map((k) => own?.[k] ?? tables.round1.text[k]);
+}
+
+/** The follow-up question for a type and chip key. */
+export function followUp(tables: FallbackTables, type: string, key: ChipKey): string {
+  return tables.round2.byType?.[type]?.[key] ?? tables.round2.question[key];
+}
+
 /** The offline answer. Always valid, for every type × chip × theme. */
 export function fallback(tables: FallbackTables, ctx: ReflectContext): ReflectResult {
   const answer = ctx.freeText || ctx.chip || '';
   if (ctx.step === 'place') {
-    const key = matchPlaceKey(tables, answer);
+    const key = matchPlaceKey(tables, answer, ctx.type);
     return {
-      question: tables.round2.question[key],
+      question: followUp(tables, ctx.type, key),
       chips: [...tables.round2.themes[key], OTHER_THEME],
       theme: null,
       sceneSpec: structuredCloneSpec(tables.round1.scene[key]),

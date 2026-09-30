@@ -198,3 +198,15 @@
 - `npm run check`: ja. Browser-Tests M3, M4, M5, M6, M8, M9-Tastatur: grün.
 
 **Neue Entscheidungen**: D35, D36.
+
+## Nachtrag 30.09. — Antworten passen zur Frage
+**Was gemacht wurde**
+- Jede Störung hat jetzt eigene 6 Antworten auf ihre Seelen-Frage. Beispiel "Whose eyes do you want on you?" → "My parents'", "Anyone's, so I'm not forgotten", "Those who overlooked me", "Everyone's", "No one's. I'd rather hide", "Maybe my own".
+- Auch die zweite Frage passt jetzt zur gewählten Antwort (z. B. "What would their eyes give you?").
+- Die KI hat eine neue Regel: jeder Chip muss direkt auf ihre Frage antworten.
+- Alle Texte stehen in `fallback.json` und in `docs/CONTENT.md` (Abschnitte 5a, 6a) zum Nachlesen.
+
+**Funktioniert es**
+- `npm run check` (55 Tests, neu: jede Antwort gehört zu genau einer Art) und Browser-Tests M5, M7: grün.
+
+**Neue Entscheidungen**: D37.

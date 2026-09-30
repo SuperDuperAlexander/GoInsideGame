@@ -6,7 +6,7 @@ import { reflect } from '../core/reflectClient';
 import { router } from '../core/router';
 import { memory } from '../core/save';
 import type { ChipKey } from '../logic/contentTypes';
-import { OTHER_THEME, type ReflectResult } from '../logic/reflect';
+import { OTHER_THEME, soulChips, type ReflectResult } from '../logic/reflect';
 import { isCrisis } from '../logic/safety';
 import type { SceneSpec } from '../logic/sceneSpec';
 import { buildInner, type BuiltInner } from '../inner/buildInner';
@@ -96,7 +96,7 @@ export class Journey {
     const b = el('button', { class: 'lw-soul lw-hand', 'data-testid': 'soul-ask' }, [t('soul.ask')]);
     b.addEventListener('click', () => {
       audio.chime(1, 0.14);
-      void this.clearUi().then(() => this.ask(content().fallback.soul[this.d.type], content().fallback.round1.chips.map((k) => content().fallback.round1.text[k]), 'place'));
+      void this.clearUi().then(() => this.ask(content().fallback.soul[this.d.type], soulChips(content().fallback, this.d.type), 'place'));
     });
     uiRoot().append(b);
     fadeIn(b);

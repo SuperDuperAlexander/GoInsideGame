@@ -9,11 +9,15 @@ export interface FallbackTables {
     text: Record<ChipKey, string>;
     scene: Record<ChipKey, SceneSpec>;
     keywords: Record<ChipKey, string[]>;
+    /** Answers to each type's soul question, one per chip key (so the answers fit the question). */
+    byType: Record<string, Record<ChipKey, string>>;
   };
   round2: {
     question: Record<ChipKey, string>;
     themes: Record<ChipKey, string[]>;
     keywords: Record<string, string[]>;
+    /** Follow-up question per type and chip key (fits the answer given). */
+    byType: Record<string, Record<ChipKey, string>>;
   };
   themeList: string[];
   seedTemplate: string;

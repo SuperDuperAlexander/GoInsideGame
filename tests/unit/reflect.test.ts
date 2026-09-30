@@ -4,6 +4,7 @@ import {
   fallback,
   matchPlaceKey,
   matchTheme,
+  soulChips,
   parseModelJson,
   validateResponse,
 } from '../../src/logic/reflect';
@@ -59,10 +60,14 @@ describe('fallback', () => {
     for (const type of disturbances.order) {
       for (const key of tables.round1.chips) {
         const ctx = { type, form: disturbances.types[type].forms[0], history: [], freeText: null };
-        const r1 = fallback(tables, { ...ctx, step: 'place', chip: tables.round1.text[key] });
+        // The chip the player sees answers this type's soul question.
+        const chip = tables.round1.byType[type][key];
+        expect(chip, `${type}.${key}`).toBeTruthy();
+        const r1 = fallback(tables, { ...ctx, step: 'place', chip });
         expect(r1.placeKey).toBe(key);
         expect(validateSceneSpec(r1.sceneSpec)).not.toBeNull();
-        expect(r1.question).toBe(tables.round2.question[key]);
+        expect(r1.question).toBe(tables.round2.byType[type][key]);
+        expect(r1.question).toMatch(/\?$/);
         expect(validateResponse(tables, 'place', r1)).not.toBeNull();
         for (const theme of r1.chips) {
           const r2 = fallback(tables, { ...ctx, step: 'theme', chip: theme, placeKey: key });
@@ -88,6 +93,18 @@ describe('fallback', () => {
     const r = fallback(tables, { type: 'money', form: 'slot machine', step: 'theme', history: [], chip: null, freeText: 'I just want to rest for once. Really.' });
     expect(r.theme).toBe('Rest');
     expect(r.seed).toBe('I just want to rest for once.');
+  });
+});
+
+describe('soul chips fit the soul question', () => {
+  it('every type has 6 own answers, all different, short, and one per place key', () => {
+    for (const type of disturbances.order) {
+      const chips = soulChips(tables, type);
+      expect(chips).toHaveLength(6);
+      expect(new Set(chips).size).toBe(6);
+      for (const c of chips) expect(c.length).toBeLessThanOrEqual(34);
+      chips.forEach((c, i) => expect(matchPlaceKey(tables, c, type)).toBe(tables.round1.chips[i]));
+    }
   });
 });
 

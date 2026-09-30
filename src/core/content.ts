@@ -38,6 +38,10 @@ export function validateContent(c: Content): void {
     const d = c.disturbances.types[t];
     if (!d || d.forms.length !== 3) throw new Error(`content: bad type ${t}`);
     if (typeof c.fallback.soul[t] !== 'string') throw new Error(`content: no soul question for ${t}`);
+    for (const k of c.fallback.round1.chips) {
+      if (!c.fallback.round1.byType?.[t]?.[k]) throw new Error(`content: no answer chip ${t}.${k}`);
+      if (!c.fallback.round2.byType?.[t]?.[k]) throw new Error(`content: no follow-up ${t}.${k}`);
+    }
     if (typeof c.strings[d.labelKey] !== 'string') throw new Error(`content: no label for ${t}`);
   }
   for (const k of c.fallback.round1.chips) {

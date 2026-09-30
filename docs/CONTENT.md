@@ -142,6 +142,36 @@ Own words without AI: pick the chip whose keywords match (want/wish/need/have �
 angry/hate/unfair/annoy → `angry`; excit/fun/thrill/love it → `excited`; no/don't want/bad/away → `pushAway`;
 else `unsure`). Also store the fragment for the echo.
 
+### 5a. Answers that fit each soul question (Alexander, 2026-09-30 — replaces the shared chips in play)
+The chips shown after the soul question are the type's own answers. Each answer belongs to one chip key, so
+the place and hard element (table above) stay the same. The shared chip texts above are used only for keyword
+matching of own words.
+
+| Type | Soul question | Answers (chip key) |
+|---|---|---|
+| `money` | What pulls you to me? | Having more (`want`) · Fear of not having enough (`afraid`) · That it's never fair (`angry`) · The thrill of winning (`excited`) · Nothing. I keep away from you (`pushAway`) · I don't know (`unsure`) |
+| `phone` | What are you looking for in me? | Someone to reach me (`want`) · Not to miss anything (`afraid`) · Something to argue with (`angry`) · The next little thrill (`excited`) · A way to look away (`pushAway`) · I don't know (`unsure`) |
+| `person` | What happens in you when you see them? | I want them close (`want`) · I'm afraid to lose them (`afraid`) · I get angry (`angry`) · My heart jumps (`excited`) · I turn away (`pushAway`) · I'm not sure (`unsure`) |
+| `recognition` | Whose eyes do you want on you? | My parents' (`want`) · Anyone's, so I'm not forgotten (`afraid`) · Those who overlooked me (`angry`) · Everyone's (`excited`) · No one's. I'd rather hide (`pushAway`) · Maybe my own (`unsure`) |
+| `closedDoor` | What do you think is behind me? | Everything I want (`want`) · Something I'm afraid of (`afraid`) · What was kept from me (`angry`) · A whole new life (`excited`) · I'd rather not know (`pushAway`) · I don't know (`unsure`) |
+| `crowd` | Where are you, when you stand in me? | Wanting to be part of it (`want`) · Lost (`afraid`) · Pushed around (`angry`) · Swept along (`excited`) · At the edge, keeping out (`pushAway`) · I don't know (`unsure`) |
+| `house` | What would living here give you? | Everything I'm missing (`want`) · Never having to worry (`afraid`) · What others have and I don't (`angry`) · A life that shines (`excited`) · Nothing. It's not for me (`pushAway`) · I'm not sure (`unsure`) |
+| `conflict` | What in you answers when I get loud? | I want to win (`want`) · I get small (`afraid`) · I get loud too (`angry`) · Something wakes up (`excited`) · I leave (`pushAway`) · I don't know (`unsure`) |
+
+### 6a. Follow-up question per type and answer
+The follow-up always fits the answer and can be answered with a wish (the theme chips).
+
+| Type | Follow-up per chip key |
+|---|---|
+| `money` | `want`: What would having more give you? · `afraid`: If there were always enough, what would you have? · `angry`: What would it give you if it were fair? · `excited`: What does winning promise you? · `pushAway`: If you let me come closer, what might you find? · `unsure`: What do you long for, under all this? |
+| `phone` | `want`: What would being reached give you? · `afraid`: If you missed nothing, what would you have? · `angry`: What would it give you to be understood? · `excited`: What does the next thrill promise you? · `pushAway`: If you looked up from me, what might be there? · `unsure`: What do you long for, under all this? |
+| `person` | `want`: What would having them close give you? · `afraid`: What would you lose with them? · `angry`: What would it give you if they understood you? · `excited`: What does that jump promise you? · `pushAway`: If you let them come closer, what might you find? · `unsure`: What do you wish for, with them? |
+| `recognition` | `want`: What would their eyes give you? · `afraid`: What would being remembered give you? · `angry`: What would it give you if they had seen you? · `excited`: What would all those eyes give you? · `pushAway`: If someone saw you, what might come? · `unsure`: What would your own eyes give you? |
+| `closedDoor` | `want`: What would getting through give you? · `afraid`: What would you need to face it? · `angry`: What would it give you to have it back? · `excited`: What would that new life give you? · `pushAway`: If you knocked, what might you find? · `unsure`: What do you hope is behind me? |
+| `crowd` | `want`: What would being part of it give you? · `afraid`: What would help you find yourself again? · `angry`: What would your own space give you? · `excited`: What does being swept along give you? · `pushAway`: If you stepped in, what might you find? · `unsure`: What do you wish for, among people? |
+| `house` | `want`: What exactly are you missing? · `afraid`: What would never worrying give you? · `angry`: What would it give you to have it too? · `excited`: What would that shine give you? · `pushAway`: If it were for you, what would it give you? · `unsure`: What would home give you? |
+| `conflict` | `want`: What would winning give you? · `afraid`: What would you need, to stay as big as you are? · `angry`: What would being heard give you? · `excited`: What does that waking promise you? · `pushAway`: What would you need, to stay? · `unsure`: What do you wish for, when it gets loud? |
+
 ## 6. Round 2 — the theme (fallback)
 
 Theme list (the only allowed themes): **Rest, Safety, Freedom, Being seen, Belonging, Love, Peace, Joy,
@@ -198,6 +228,7 @@ Rules:
 - Ask exactly one question, max 14 words. Never more than one question.
 - Never give advice. Never explain. Never interpret. Never diagnose. Never praise or judge.
 - Never name the player's feeling for them. Offer possible answers as short chips instead.
+- Every chip must be a direct, natural answer to your own question.
 - Reuse the player's own words where possible.
 - No spiritual, medical or therapy vocabulary. No promises. English only.
 - If the player writes about wanting to die, hurting themselves or others, do not continue the

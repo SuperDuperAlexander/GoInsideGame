@@ -120,6 +120,72 @@
         "away"
       ],
       "unsure": []
+    },
+    "byType": {
+      "money": {
+        "want": "Having more",
+        "afraid": "Fear of not having enough",
+        "angry": "That it's never fair",
+        "excited": "The thrill of winning",
+        "pushAway": "Nothing. I keep away from you",
+        "unsure": "I don't know"
+      },
+      "phone": {
+        "want": "Someone to reach me",
+        "afraid": "Not to miss anything",
+        "angry": "Something to argue with",
+        "excited": "The next little thrill",
+        "pushAway": "A way to look away",
+        "unsure": "I don't know"
+      },
+      "person": {
+        "want": "I want them close",
+        "afraid": "I'm afraid to lose them",
+        "angry": "I get angry",
+        "excited": "My heart jumps",
+        "pushAway": "I turn away",
+        "unsure": "I'm not sure"
+      },
+      "recognition": {
+        "want": "My parents'",
+        "afraid": "Anyone's, so I'm not forgotten",
+        "angry": "Those who overlooked me",
+        "excited": "Everyone's",
+        "pushAway": "No one's. I'd rather hide",
+        "unsure": "Maybe my own"
+      },
+      "closedDoor": {
+        "want": "Everything I want",
+        "afraid": "Something I'm afraid of",
+        "angry": "What was kept from me",
+        "excited": "A whole new life",
+        "pushAway": "I'd rather not know",
+        "unsure": "I don't know"
+      },
+      "crowd": {
+        "want": "Wanting to be part of it",
+        "afraid": "Lost",
+        "angry": "Pushed around",
+        "excited": "Swept along",
+        "pushAway": "At the edge, keeping out",
+        "unsure": "I don't know"
+      },
+      "house": {
+        "want": "Everything I'm missing",
+        "afraid": "Never having to worry",
+        "angry": "What others have and I don't",
+        "excited": "A life that shines",
+        "pushAway": "Nothing. It's not for me",
+        "unsure": "I'm not sure"
+      },
+      "conflict": {
+        "want": "I want to win",
+        "afraid": "I get small",
+        "angry": "I get loud too",
+        "excited": "Something wakes up",
+        "pushAway": "I leave",
+        "unsure": "I don't know"
+      }
     }
   },
   "round2": {
@@ -215,6 +281,72 @@
       "Enough": [
         "enough"
       ]
+    },
+    "byType": {
+      "money": {
+        "want": "What would having more give you?",
+        "afraid": "If there were always enough, what would you have?",
+        "angry": "What would it give you if it were fair?",
+        "excited": "What does winning promise you?",
+        "pushAway": "If you let me come closer, what might you find?",
+        "unsure": "What do you long for, under all this?"
+      },
+      "phone": {
+        "want": "What would being reached give you?",
+        "afraid": "If you missed nothing, what would you have?",
+        "angry": "What would it give you to be understood?",
+        "excited": "What does the next thrill promise you?",
+        "pushAway": "If you looked up from me, what might be there?",
+        "unsure": "What do you long for, under all this?"
+      },
+      "person": {
+        "want": "What would having them close give you?",
+        "afraid": "What would you lose with them?",
+        "angry": "What would it give you if they understood you?",
+        "excited": "What does that jump promise you?",
+        "pushAway": "If you let them come closer, what might you find?",
+        "unsure": "What do you wish for, with them?"
+      },
+      "recognition": {
+        "want": "What would their eyes give you?",
+        "afraid": "What would being remembered give you?",
+        "angry": "What would it give you if they had seen you?",
+        "excited": "What would all those eyes give you?",
+        "pushAway": "If someone saw you, what might come?",
+        "unsure": "What would your own eyes give you?"
+      },
+      "closedDoor": {
+        "want": "What would getting through give you?",
+        "afraid": "What would you need to face it?",
+        "angry": "What would it give you to have it back?",
+        "excited": "What would that new life give you?",
+        "pushAway": "If you knocked, what might you find?",
+        "unsure": "What do you hope is behind me?"
+      },
+      "crowd": {
+        "want": "What would being part of it give you?",
+        "afraid": "What would help you find yourself again?",
+        "angry": "What would your own space give you?",
+        "excited": "What does being swept along give you?",
+        "pushAway": "If you stepped in, what might you find?",
+        "unsure": "What do you wish for, among people?"
+      },
+      "house": {
+        "want": "What exactly are you missing?",
+        "afraid": "What would never worrying give you?",
+        "angry": "What would it give you to have it too?",
+        "excited": "What would that shine give you?",
+        "pushAway": "If it were for you, what would it give you?",
+        "unsure": "What would home give you?"
+      },
+      "conflict": {
+        "want": "What would winning give you?",
+        "afraid": "What would you need, to stay as big as you are?",
+        "angry": "What would being heard give you?",
+        "excited": "What does that waking promise you?",
+        "pushAway": "What would you need, to stay?",
+        "unsure": "What do you wish for, when it gets loud?"
+      }
     }
   },
   "themeList": [

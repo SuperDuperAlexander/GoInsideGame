@@ -67,7 +67,7 @@ test('M7 ai bad JSON falls back', async ({ page }) => {
   await inside(page);
   await ownWords(page, 'I want it so much');
   await waitStep(page, 'answer2');
-  await expect(page.getByTestId('question')).toHaveText('What would having it give you?');
+  await expect(page.getByTestId('question')).toHaveText('What would being reached give you?');
   expect((await lw<{ AI: string }>(page, 'stats')).AI).toBe('fallback');
   expectClean(w);
 });
@@ -82,7 +82,7 @@ test('M7 ai timeout falls back', async ({ page }) => {
   await inside(page);
   await ownWords(page, 'I am afraid to lose it');
   await waitStep(page, 'answer2', 30_000);
-  await expect(page.getByTestId('question')).toHaveText('What are you afraid of losing?');
+  await expect(page.getByTestId('question')).toHaveText('If you missed nothing, what would you have?');
   expectClean(w);
 });
 
