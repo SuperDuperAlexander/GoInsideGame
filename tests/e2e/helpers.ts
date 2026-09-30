@@ -101,6 +101,5 @@ export async function journey(page: Page, lane: number, o: { chip?: number; ownW
   await waitStep(page, 'seed');
   await page.getByTestId('seed-keep').click();
   await waitStep(page, 'return');
-  await lw(page, 'breathe');
   await waitState(page, 'outer', 60_000);
 }

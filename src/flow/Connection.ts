@@ -1,6 +1,5 @@
 import { TUNING } from '../config/tuning';
 import { audio } from '../core/audio';
-import { t } from '../core/content';
 import { bus } from '../core/events';
 import { router } from '../core/router';
 import { memory } from '../core/save';
@@ -8,7 +7,7 @@ import type { Disturbance } from '../outer/Disturbance';
 import { InnerWorld } from '../inner/InnerWorld';
 import { updatePaperUniforms } from '../render/materials/papercut';
 import { SceneInstrumentation } from '@babylonjs/core/Instrumentation/sceneInstrumentation';
-import { WorldText } from '../ui/WorldText';
+import type { WorldText } from '../ui/WorldText';
 import type { Game } from './Game';
 import { GoldFade } from './Dive';
 
@@ -71,7 +70,6 @@ export class Connection {
   private onBreath(): void {
     if (this.busy) return;
     if (this.step === 'dive') void this.enter();
-    else if (this.step === 'return') void this.leave();
     else this.onInnerBreath?.();
   }
 
@@ -90,18 +88,22 @@ export class Connection {
     this.step = 'arrive';
     await this.gold.out(TUNING.motion.goldFade * 1000);
     this.busy = false;
-    this.arrived();
+    // returnNow() may already have asked to go back while the gold faded out.
+    if (this.step === 'arrive') this.arrived();
   }
 
   /** Hook for the journey (M5). By default the journey is empty and only the return is offered. */
   buildArrival: () => void = () => undefined;
   arrived: () => void = () => this.askReturn();
 
+  /** Back out. No breath needed: after a quiet moment the camera flies back behind the figure. */
   askReturn(): void {
     this.step = 'return';
-    this.prompt = new WorldText(t('return.prompt'), { inner: true, top: '30%', testid: 'return-prompt' });
-    this.game.breathAsked = true;
+    this.game.breathAsked = false;
     bus.emit('inner:step', { step: 'return' });
+    setTimeout(() => {
+      if (this.step === 'return') void this.leave();
+    }, TUNING.inner.returnPause * 1000);
   }
 
   private async leave(): Promise<void> {

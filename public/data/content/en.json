@@ -80,5 +80,7 @@
   "a11y.push": "Push",
   "a11y.pause": "Pause",
   "a11y.mic": "Speak",
-  "a11y.body": "Body outline"
+  "a11y.body": "Body outline",
+  "guide.in": "Breathe in",
+  "guide.out": "Breathe out"
 }

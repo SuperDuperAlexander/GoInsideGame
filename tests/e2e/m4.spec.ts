@@ -38,12 +38,11 @@ test('M4 dive', async ({ page }, info) => {
       await shot(page, info, 'M4', 'inner-empty');
     }
     await lw(page, 'returnNow');
-    await lw(page, 'breathe');
     await waitState(page, 'outer');
     const d = (await lw<D[]>(page, 'disturbances'))[1];
     expect(d.phase).not.toBe('connected');
     await lw(page, 'teleport', 0, -8 - 9, 0);
-    await page.waitForTimeout(300);
+    await page.waitForTimeout(1500);
     counts.push(await lw(page, 'sceneCounts'));
     heaps.push(await lw<number>(page, 'heap'));
   }

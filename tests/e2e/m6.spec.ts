@@ -19,9 +19,8 @@ test('M6 loop', async ({ page }, info) => {
   await journey(page, 0, { chip: 0 });
   let ds = await lw<D[]>(page, 'disturbances');
   expect(ds[0].phase).toBe('connected');
-  await page.waitForTimeout(3500);
-  ds = await lw<D[]>(page, 'disturbances');
-  expect(ds[0].r).toBeLessThan(1);
+  // The collider shrinks while it steps aside (2.5 s of game time).
+  await page.waitForFunction(() => (window as never as { __lw: { disturbances(): { r: number }[] } }).__lw.disturbances()[0].r < 1, null, { timeout: 30_000 });
   await lw(page, 'teleport', -8, 0, Math.atan2(-2.1, 2.8) + Math.PI * 0);
   await page.waitForTimeout(1500);
   await shot(page, info, 'M6', 'after-1');

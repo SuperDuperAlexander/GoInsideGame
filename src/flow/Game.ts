@@ -17,7 +17,7 @@ import { updateCardboardUniforms } from '../render/materials/cardboard';
 import { WORLD } from '../render/materials/greyChunk';
 import { Disturbance } from '../outer/Disturbance';
 import { OuterWorld } from '../outer/OuterWorld';
-import { BreathButton } from '../ui/BreathButton';
+import { BreathGuide } from '../ui/BreathGuide';
 import { ChoicePair } from '../ui/ChoicePair';
 import { DebugOverlay } from '../ui/DebugOverlay';
 import { Hint } from '../ui/Hint';
@@ -47,7 +47,10 @@ export class Game {
   readonly echo: Echo;
   private joystick: Joystick;
   private instr: SceneInstrumentation;
-  private breathButton: BreathButton;
+  private guide: BreathGuide;
+  /** Seconds into the guided breath cycle; −1 when no breath is asked. */
+  private guideT = -1;
+  private guideRunning = false;
   private pushButton: PushButton;
   private opening: Opening | null = null;
   private choice: ChoicePair | null = null;
@@ -58,7 +61,7 @@ export class Game {
   private scripted: ScriptedBreath | null = null;
   private samples: (() => void)[] = [];
   private checkpointTimer = 0;
-  /** A breath is asked for (opening, dive, one, return): shows the breath button / hint. */
+  /** A breath is asked for (opening, dive, one): the breath guide appears and leads the player. */
   breathAsked = false;
   /** While diving: set by the connection flow. */
   onWithin: ((d: Disturbance) => void) | null = null;
@@ -79,7 +82,7 @@ export class Game {
     this.echo = new Echo(this.outer.scene);
     this.debug = new DebugOverlay(flags.debug);
     this.joystick = new Joystick(this.input);
-    this.breathButton = new BreathButton(this.input, t('a11y.breath'));
+    this.guide = new BreathGuide();
     this.pushButton = new PushButton(t('a11y.push'));
     this.breath.setPreset(memory.data.settings.rhythm);
     audio.volume = memory.data.settings.volume;
@@ -174,20 +177,34 @@ export class Game {
     });
   }
 
+  /**
+   * Nothing to press: when a breath is asked, the guide runs a calm cycle (in, then out) and the
+   * breath follows it. Tests may drive a faster scripted breath.
+   */
   private breathInput(dt: number): { inhaleHeld: boolean; exhaleHeld: boolean; touchMode: boolean } {
-    if (!this.scripted && flags.autobreathe && this.breathAsked) this.scripted = { t: 0, inFor: TUNING.breath.autoIn, resolve: () => undefined };
     if (this.scripted) {
       const s = this.scripted;
       s.t += dt;
       const inhale = s.t < s.inFor;
-      if (!inhale && this.breath.phase === 'idle' && this.breath.level <= 0) {
-        // Autobreathe: one breath per ask; the listener in breathe() clears it.
-        if (!flags.autobreathe || !this.breathAsked) this.scripted = null;
-        else s.t = 0;
-      }
       return { inhaleHeld: inhale, exhaleHeld: !inhale, touchMode: false };
     }
-    return { inhaleHeld: this.input.inhaleHeld, exhaleHeld: this.input.exhaleHeld, touchMode: this.input.touchMode };
+    if (!this.breathAsked) {
+      this.guideRunning = false;
+      this.guideT = -1;
+      return { inhaleHeld: false, exhaleHeld: this.breath.level > 0, touchMode: false };
+    }
+    const r = this.breath.rhythm;
+    const speed = flags.autobreathe ? 3 : 1;
+    // A short pause before the first cycle, so the guide can fade in.
+    if (!this.guideRunning) {
+      this.guideRunning = true;
+      this.guideT = -1.2;
+    }
+    this.guideT += dt * (this.guideT < 0 ? 1 : speed);
+    if (this.guideT < 0) return { inhaleHeld: false, exhaleHeld: false, touchMode: false };
+    const cyc = this.guideT % (r.inSeconds + r.outSeconds);
+    const inhale = cyc < r.inSeconds;
+    return { inhaleHeld: inhale, exhaleHeld: !inhale, touchMode: false };
   }
 
   private frame(): void {
@@ -338,16 +355,11 @@ export class Game {
   }
 
   private updateUi(): void {
-    const state = router.state;
     const touch = this.input.touchMode;
-    const showBreath = touch && (this.breathAsked || state === 'outer' || state === 'choosing');
-    this.breathButton.show(showBreath, this.breathAsked);
-    this.breathButton.update(this.breath);
-    const breathHint = touch ? (state === 'opening' ? t('hint.breathTouch') : null) : t('hint.breathDesktop');
-    if (this.breathAsked && breathHint) {
-      if (this.walkHintTime >= 0) this.walkHintTime = -1;
-      this.hint.show(breathHint, this.innerActive, 'breath-hint');
-    } else if (this.hint.visible && this.walkHintTime < 0) this.hint.hide();
+    const guiding = this.breathAsked && (this.guideT >= 0 || !!this.scripted);
+    const phase = this.breath.phase === 'idle' ? 'idle' : this.breath.phase;
+    this.guide.update(this.breathAsked, guiding ? phase : 'idle', this.breath.level, this.innerActive);
+    if (this.breathAsked && this.hint.visible && this.walkHintTime < 0) this.hint.hide();
     const canPush = this.walking && !!this.nearest(TUNING.disturb.pushRange);
     this.pushButton.show(touch && canPush);
     this.joystick.update();
