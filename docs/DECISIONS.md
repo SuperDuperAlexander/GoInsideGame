@@ -39,3 +39,5 @@ Decisions made by Claude Code during the build start at D11.
 - D32. The AI is used only after the player said *Allow* (and never with `?noai`). Chip-only answers before consent use the offline tables. Reason: privacy first; player text is sent only with consent.
 - D33. The browser also rejects AI questions without a single "?" and any AI text that matches the crisis list. Reason: the disturbance speaks only in questions; safety.
 - D34. The API function keeps only known fields (type, form, step, history, chip, freeText) with size limits before sending to OpenRouter. Reason: small, predictable requests; 4 kB limit.
+- D35. (Alexander, 2026-09-30) No pressing to breathe. A guided breath bubble (like Calm) leads the player; the breath follows it. Coming back out needs no breath. This replaces GAME_DESIGN §7 "Hold Space / hold the light".
+- D36. World text in the inner world sits on a soft dark plate; outer world text on a soft light plate. Reason: white text was hard to read on light paper.

@@ -24,7 +24,10 @@ test('M3 disturbances', async ({ page }, info) => {
   await expect(page.getByTestId('opening-word')).toHaveText('Breathe.');
   await page.waitForTimeout(600);
   await shot(page, info, 'M3', 'opening-blur');
-  await lw(page, 'breathe');
+  // The guided breath: nothing to press, the guide leads and the blur clears by itself.
+  await expect(page.getByTestId('breath-guide')).toHaveClass(/lw-on/);
+  await expect(page.getByTestId('breath-guide')).toContainText('Breathe in', { timeout: 20_000 });
+  await shot(page, info, 'M3', 'breath-guide');
   await waitState(page, 'outer');
 
   // The three picked types stand in the three lanes, in order.

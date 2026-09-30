@@ -68,13 +68,8 @@ test('M9 keyboard only', async ({ page }, info) => {
   await page.getByTestId('picker-continue').focus();
   await page.keyboard.press('Enter');
   await waitState(page, 'opening');
-  // Hold Space, then Shift: one breath.
-  await page.keyboard.down('Space');
-  await page.waitForFunction(() => (window as never as { __lw: { stats(): { breath: number } } }).__lw.stats().breath > 0.3, null, { timeout: 30_000 });
-  await page.keyboard.up('Space');
-  await page.keyboard.down('ShiftLeft');
-  await waitState(page, 'outer', 60_000);
-  await page.keyboard.up('ShiftLeft');
+  // Nothing to press: the guided breath clears the opening by itself.
+  await waitState(page, 'outer', 90_000);
   const [x, z, h] = APPROACH[1];
   await lw(page, 'teleport', x, z, h);
   await waitState(page, 'choosing');

@@ -631,3 +631,73 @@ button {
 .lw-reduced .lw-breath.lw-pulse {
   animation: none;
 }
+
+/* Guided breath bubble, at the side. */
+.lw-guide {
+  position: absolute;
+  right: calc(20px + env(safe-area-inset-right));
+  top: 50%;
+  transform: translateY(-50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  opacity: 0;
+  transition: opacity 900ms ease-in-out;
+}
+.lw-guide.lw-on {
+  opacity: 1;
+}
+.lw-guide-bubble {
+  width: 132px;
+  height: 132px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: radial-gradient(circle, rgba(255, 243, 209, 0.95), rgba(255, 200, 103, 0.55) 55%, rgba(255, 200, 103, 0) 72%);
+  box-shadow: 0 0 40px rgba(255, 200, 103, 0.45);
+  transition: transform 120ms linear;
+}
+.lw-guide-core {
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: var(--player-heartCore);
+}
+.lw-guide-label {
+  min-height: 1.4em;
+  padding: 4px 14px;
+  border-radius: 999px;
+  background: var(--ui-panel);
+  color: var(--ui-text);
+  font-size: 15px;
+}
+.lw-guide.lw-dark .lw-guide-label {
+  background: var(--ui-panelDark);
+  color: var(--ui-textLight);
+}
+@media (max-width: 600px) {
+  .lw-guide {
+    top: auto;
+    bottom: calc(110px + env(safe-area-inset-bottom));
+    transform: none;
+  }
+  .lw-guide-bubble {
+    width: 104px;
+    height: 104px;
+  }
+}
+
+/* World text stays readable on light paper: a soft dark plate behind it. */
+.lw-worldtext.lw-inner {
+  padding: 6px 18px 8px;
+  border-radius: 18px;
+  background: rgba(20, 21, 38, 0.55);
+  text-shadow: 0 1px 3px rgba(20, 21, 38, 0.9);
+}
+.lw-worldtext:not(.lw-inner) {
+  padding: 4px 16px 6px;
+  border-radius: 18px;
+  background: rgba(233, 230, 224, 0.6);
+}

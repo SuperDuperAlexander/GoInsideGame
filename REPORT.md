@@ -186,3 +186,15 @@
 - Bilder: `screenshots/final/`.
 
 **Neue Entscheidungen**: keine.
+
+## Nachtrag 30.09. — Geführter Atem, lesbare Schrift, Konzept "lebendige Welt"
+**Was gemacht wurde**
+- Kein Drücken mehr zum Atmen. Eine Licht-Blase an der Seite (wie "Breathe Bubble" in der App Calm) wächst bei "Breathe in" und schrumpft bei "Breathe out". Man folgt ihr nur.
+- Weniger Atem: Anfang (1), Hineingehen (1), "Eins" (3). Hinausgehen geht jetzt ohne Atem.
+- Weiße Schrift in der inneren Welt steht auf einer weichen dunklen Fläche, dunkle Schrift außen auf einer hellen Fläche.
+- Recherche + Vorschlag: `docs/WORLD_CONCEPT.md` (lebendige Welt, Stimmung der Stadt, Menschen werden freundlicher, Welt-Ereignisse per KI aus einem festen Baukasten).
+
+**Funktioniert es**
+- `npm run check`: ja. Browser-Tests M3, M4, M5, M6, M8, M9-Tastatur: grün.
+
+**Neue Entscheidungen**: D35, D36.

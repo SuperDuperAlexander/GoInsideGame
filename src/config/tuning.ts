@@ -72,6 +72,8 @@ export const TUNING = {
     heartSeconds: 10,
     oneBreaths: 3,
     stepSeconds: 2,
+    /** Quiet seconds before flying back out after the seed. */
+    returnPause: 1.8,
   },
   motion: {
     fadeIn: 400,
